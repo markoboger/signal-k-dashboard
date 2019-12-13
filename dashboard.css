@@ -1,15 +1,18 @@
 .grid-container {
   height: 100%;
   width: 100%;
+  font-size:33vh;
+  align-content: center;
   display:grid;
   background-color: rgb(248, 93, 3);
   grid-template-columns: 25% 25% 25% 25%;
-  grid-template-rows: 40% 40% 20%;
+  grid-template-rows: 33% 34% 33%;
 }
 
 .item1 {
   grid-column-start: 1;
   grid-column-end: 5;
+  font-size: 50%;
   background-color: rgb(76, 43, 226);
 }
 
