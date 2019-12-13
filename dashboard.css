@@ -1,3 +1,17 @@
+.grid-container {
+  height: 100%;
+  width: 100%;
+  display:grid;
+  background-color: rgb(248, 93, 3);
+  grid-template-columns: 25% 25% 25% 25%;
+  grid-template-rows: 40% 40% 20%;
+}
+
+.item1 {
+  grid-column-start: 1;
+  grid-column-end: 5;
+  background-color: rgb(76, 43, 226);
+}
 
 @media only screen 
 and (min-device-width: 768px) 
@@ -5,9 +19,6 @@ and (max-device-width: 1024px)
 and (orientation: portrait) 
 and (-webkit-min-device-pixel-ratio: 1) {
     .grid-container {
-        height: 100%;
-        width: 100%;
-        display:grid;
         background-color: rgb(132, 42, 211);
         grid-gap: 5px;
         grid-template-columns: 25% 25% 25% 25%;
@@ -27,9 +38,6 @@ and (-webkit-min-device-pixel-ratio: 1) {
   and (orientation: landscape) 
   and (-webkit-min-device-pixel-ratio: 1) {
     .grid-container {
-        height: 100%;
-        width: 100%;
-        display:grid;
         background-color: rgb(222, 201, 241);
         grid-gap: 5px;
         grid-template-columns: 25% 25% 25% 25%;
