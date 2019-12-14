@@ -1,20 +1,47 @@
 .grid-container {
   height: 100%;
   width: 100%;
-  font-size:30vh;
+ 
   text-align: center;
-  display:grid;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(26, 1fr);
   grid-gap: 5px;
   background-color: rgb(248, 93, 3);
-  grid-template-columns: 25% 25% 25% 25%;
-  grid-template-rows: 33% 34% 33%;
+}
+@media only screen 
+and (orientation: landscape) {
+  .grid-container {
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(26, 1fr);
+    font-size:3.8vh;
+  }
+}
+
+@media only screen 
+and (orientation: portrait) {
+  .grid-container {
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(30, 1fr);
+    font-size:3.3vh;
+  }
 }
 
 .item1 {
-  grid-column-start: 1;
+  grid-column-start: 2;
   grid-column-end: 5;
-  font-size: 47%;
+  grid-row-start: 1;
+  grid-row-end: 3;
+  font-size: 95%;
   background-color: rgb(76, 43, 226);
+}
+.item2 {
+  grid-column-start: 5;
+  grid-column-end: 7;
+  grid-row-start: 8;
+  grid-row-end: 12;
+  font-size: 380%;
+  background-color: rgb(156, 226, 43);
 }
 
 /* iPad Portrait */
@@ -23,15 +50,10 @@ and (min-device-width: 768px)
 and (max-device-width: 1024px) 
 and (orientation: portrait) 
 and (-webkit-min-device-pixel-ratio: 1) {
-    .grid-container {
-        background-color: rgb(132, 42, 211);
-        grid-template-columns: 25% 25% 25% 25%;
-        grid-template-rows: 40% 20% 40%;
-    }
     .item1 {
         grid-column-start: 1;
         grid-column-end: 3;
-        font-size: 20%;
+        font-size: 95%;
         background-color: rgb(226, 43, 186);
       }
 }
@@ -42,16 +64,10 @@ and (-webkit-min-device-pixel-ratio: 1) {
   and (max-device-width: 1024px) 
   and (orientation: landscape) 
   and (-webkit-min-device-pixel-ratio: 1) {
-    .grid-container {
-        background-color: rgb(222, 201, 241);
-        grid-gap: 5px;
-        grid-template-columns: 25% 25% 25% 25%;
-        grid-template-rows: 20% 40% 40%;
-    }
     .item1 {
         grid-column-start: 2;
         grid-column-end: 5;
-        font-size: 30%;
+        font-size: 95%;
         background-color: rgb(58, 226, 43);
       }
 }
