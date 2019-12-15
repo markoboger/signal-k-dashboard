@@ -5,12 +5,28 @@ function doOnOrientationChange() {
         document.getElementById('rimbox1-2-portrait').id="rimbox1-2"
         document.getElementById('rimbox1-3-portrait').id="rimbox1-3"
         document.getElementById('rimbox1-4-portrait').id="rimbox1-4"
+        document.getElementById('rimbox2-1-portrait').id="rimbox2-1"
+        document.getElementById('rimbox2-2-portrait').id="rimbox2-2"
+        document.getElementById('rimbox2-3-portrait').id="rimbox2-3"
+        document.getElementById('rimbox2-4-portrait').id="rimbox2-4"
+        document.getElementById('rimbox3-1-portrait').id="rimbox3-1"
+        document.getElementById('rimbox3-2-portrait').id="rimbox3-2"
+        document.getElementById('rimbox3-3-portrait').id="rimbox3-3"
+        document.getElementById('rimbox3-4-portrait').id="rimbox3-4"
         break; 
       default:
         document.getElementById('rimbox1-1').id="rimbox1-1-portrait"
         document.getElementById('rimbox1-2').id="rimbox1-2-portrait"
         document.getElementById('rimbox1-3').id="rimbox1-3-portrait"
         document.getElementById('rimbox1-4').id="rimbox1-4-portrait"
+        document.getElementById('rimbox2-1').id="rimbox2-1-portrait"
+        document.getElementById('rimbox2-2').id="rimbox2-2-portrait"
+        document.getElementById('rimbox2-3').id="rimbox2-3-portrait"
+        document.getElementById('rimbox2-4').id="rimbox2-4-portrait"
+        document.getElementById('rimbox3-1').id="rimbox3-1-portrait"
+        document.getElementById('rimbox3-2').id="rimbox3-2-portrait"
+        document.getElementById('rimbox3-3').id="rimbox3-3-portrait"
+        document.getElementById('rimbox3-4').id="rimbox3-4-portrait"
         break; 
     }
 }
@@ -43,7 +59,7 @@ Vue.component('data-box', {
                 }
             },
     },
-    props:['abbreviation', 'aggregate','description','icon', 'unit'],
+    props:['abbreviation', 'aggregate','description','icon', 'unit', 'color'],
     template: `
         <div class="data-box-container">
             <div class="data-box-abbreviation"> 
@@ -63,8 +79,7 @@ Vue.component('data-box', {
             <div class="data-box-unit">
                 {{unit}}
             </div>
-        </div>
-        `
+        </div>`
     })
 
   var dashboard = new Vue({
@@ -74,14 +89,26 @@ Vue.component('data-box', {
         lon:'009° 56,89',
         time:"12:36:56",
         countdown:"00:45:20",
+        rpm:"2700 RPM",
+        log:"12,345 nm",
         heading:'360',
+        depth:'18,5',
         stw:'12,34',
         sog:'8,90',
         aws:'15,89',
         tws:'10,40',
+        vmg:'3,40',
+        temp:'21,3',
+        fuel:'89',
+        bat:'98',
         stw_avg:'7,89',
         sog_avg:'8,76',
         tws_avg:'11,90',
         aws_avg:'10,99',
+        stw_max:'7,89',
+        sog_max:'8,76',
+        tws_max:'11,90',
+        aws_max:'10,99',
+        vmg_avg:'3,78',
     }
 })
