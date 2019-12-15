@@ -6,14 +6,19 @@
     </head>
     <body>
        <div id="dashboard" class="grid-container">
-        <div class="textbox" id="textbox1">{{lat}} <br> {{lon}}</div>   
-        <div class="textbox" id=textbox2>{{time}} <br> {{countdown}}</div>
-        <data-box class="topbox" abreviation="COG" icon="@" description="Course over Ground">{{course}}</data-box>
-        <data-box class="centerbox" id="centerbox1" abreviation="STW" icon="@" description="Speed through Water">{{stw}}</data-box>
-        <data-box class="centerbox" id="centerbox2" abreviation="SOG" icon="@" description="Speed over Ground">{{sog}}</data-box>
-        <data-box class="centerbox" id="centerbox3" abreviation="AWS" icon="@" description="Apparent Wind Speed">{{aws}}</data-box>
-        <data-box class="centerbox" id="centerbox4" abreviation="TWS" icon="@" description="True Wind Speed">{{tws}}</data-box>
-        
+        <data-box class="textbox"   id="textbox1">{{lat}} <br> {{lon}}</data-box>   
+        <data-box class="textbox"   id=textbox2>{{time}} <br> {{countdown}}</data-box>
+        <data-box class="topbox">{{heading}}</data-box>
+        <data-box class="centerbox" id="centerbox1" abbreviation="STW" icon="@" description="Speed through Water" unit="kn" color="">{{stw}}</data-box>
+        <data-box class="centerbox" id="centerbox2" abbreviation="SOG" icon="@" description="Speed over Ground"   unit="kn">{{sog}}</data-box>
+        <data-box class="centerbox" id="centerbox3" abbreviation="AWS" icon="@" description="Apparent Wind Speed" unit="kn">{{aws}}</data-box>
+        <data-box class="centerbox" id="centerbox4" abbreviation="TWS" icon="@" description="True Wind Speed"     unit="kn">{{tws}}</data-box>
+
+        <data-box class="rimbox" id="rimbox1-1" abbreviation="TWS" aggregate="Avg" icon="@" description="True Wind Speed"     unit="kn">{{tws_avg}}</data-box>
+        <data-box class="rimbox" id="rimbox1-2" abbreviation="TWS" aggregate="Avg" icon="@" description="True Wind Speed"     unit="kn">{{tws_avg}}</data-box>
+        <data-box class="rimbox" id="rimbox1-3" abbreviation="TWS" aggregate="Avg" icon="@" description="True Wind Speed"     unit="kn">{{tws_avg}}</data-box>
+        <data-box class="rimbox" id="rimbox1-4" abbreviation="TWS" aggregate="Avg" icon="@" description="True Wind Speed"     unit="kn">{{tws_avg}}</data-box>
+
        </div>
        <script src="./dashboard.js"></script>
     </body>

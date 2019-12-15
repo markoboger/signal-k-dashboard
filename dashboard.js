@@ -1,28 +1,88 @@
-var dashboard = new Vue({
+function doOnOrientationChange() {
+    switch(window.orientation) {  
+      case -90: case 90:
+        document.getElementById('rimbox1-1-portrait').id="rimbox1-1"
+        document.getElementById('rimbox1-2-portrait').id="rimbox1-2"
+        document.getElementById('rimbox1-3-portrait').id="rimbox1-3"
+        document.getElementById('rimbox1-4-portrait').id="rimbox1-4"
+        break; 
+      default:
+        document.getElementById('rimbox1-1').id="rimbox1-1-portrait"
+        document.getElementById('rimbox1-2').id="rimbox1-2-portrait"
+        document.getElementById('rimbox1-3').id="rimbox1-3-portrait"
+        document.getElementById('rimbox1-4').id="rimbox1-4-portrait"
+        break; 
+    }
+}
+  
+window.addEventListener('orientationchange', doOnOrientationChange);
+
+doOnOrientationChange;
+
+Vue.component('data-box', {
+    data: function () {
+      return {
+        data: {
+            content:'12.34'
+        }
+      }
+    },
+    computed:{
+            portrait: function() {
+                if(window.innerHeight > window.innerWidth){
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            landscape:function() {
+                if(window.innerHeight >= window.innerWidth){
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+    },
+    props:['abbreviation', 'aggregate','description','icon', 'unit'],
+    template: `
+        <div class="data-box-container">
+            <div class="data-box-abbreviation"> 
+                {{abbreviation}} 
+            </div> 
+            <div class="data-box-aggregate">
+                {{aggregate}}
+            </div>
+            <div class="data-box-icon">
+                {{icon}} 
+            </div>
+            <div class="data-box-content"> <slot></slot>
+            </div>
+            <div class="data-box-description">
+                {{description}}
+            </div>
+            <div class="data-box-unit">
+                {{unit}}
+            </div>
+        </div>
+        `
+    })
+
+  var dashboard = new Vue({
     el:"#dashboard",
     data:{
         lat:'50° 34,56',
         lon:'009° 56,89',
         time:"12:36:56",
         countdown:"00:45:20",
-        course:'360',
+        heading:'360',
         stw:'12,34',
         sog:'8,90',
         aws:'15,89',
         tws:'10,40',
+        tws_avg:'11,90',
         item1:'12,34',
         item2:'2',
         item3:'3',
         item4:'4'
     }
 })
-
-Vue.component('data-box', {
-    data: function () {
-      return {
-        data: 0
-      }
-    },
-    props:['abreviation','description','icon'],
-    template: '<div>{{abreviation}} {{icon}} <br> <div v-html="content"></div><br>{{description}}</div>'
-  })
