@@ -79,10 +79,9 @@ Vue.component('data-box', {
         sog:'8,90',
         aws:'15,89',
         tws:'10,40',
+        stw_avg:'7,89',
+        sog_avg:'8,76',
         tws_avg:'11,90',
-        item1:'12,34',
-        item2:'2',
-        item3:'3',
-        item4:'4'
+        aws_avg:'10,99',
     }
 })

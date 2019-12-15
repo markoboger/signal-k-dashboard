@@ -46,10 +46,10 @@
 #rimbox1-3 { grid-column: 1; grid-row: 13/15;}
 #rimbox1-4 { grid-column: 1; grid-row: 11/13;}
 
-#rimbox1-1-portrait { grid-column: 2; grid-row: 3/5;}
-#rimbox1-2-portrait { grid-column: 3; grid-row: 3/5;}
-#rimbox1-3-portrait { grid-column: 4; grid-row: 3/5;}
-#rimbox1-4-portrait { grid-column: 5; grid-row: 3/5;}
+#rimbox1-1-portrait { grid-column: 5; grid-row: 3/5;}
+#rimbox1-2-portrait { grid-column: 4; grid-row: 3/5;}
+#rimbox1-3-portrait { grid-column: 3; grid-row: 3/5;}
+#rimbox1-4-portrait { grid-column: 2; grid-row: 3/5;}
 
 .data-box-container {
   display:grid;
@@ -89,42 +89,29 @@
   text-align: right;
 }
 
-@media only screen 
-and (orientation: landscape){
+@media (orientation: landscape){
   .grid-container {
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(2, 1fr) repeat(2,0fr) repeat(4,1fr) repeat(2,0fr) repeat(14, 1fr) repeat(2,0fr) repeat(4,1fr) repeat(2,0fr) repeat(2,1fr);  
-    font-size:3.846vh;
+    font-size:3.846vh; /* Text hight with 26 rows (100/28) */
   } 
 }
 
-@media only screen 
-and (orientation: portrait) {
+@media (orientation: portrait) {
   .grid-container {
     grid-template-columns:  0fr repeat(8, 1fr) 0fr ;
     grid-template-rows: repeat(2, 1fr) repeat(2,1fr) repeat(4,1fr) repeat(2,0fr) repeat(14, 1fr) repeat(2,0fr) repeat(4,1fr) repeat(2,1fr) repeat(2,1fr);  
-    font-size:3.333vh;
-  }
-}
-/*
-@media only screen 
-and (orientation: landscape)
-and (max-aspect-ratio:14/9) {
-  .grid-container {
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(2, 1fr) repeat(2,0fr) repeat(4,1fr) repeat(2,0fr) repeat(14, 1fr) repeat(2,0fr) repeat(4,1fr) repeat(2,0fr) repeat(2,1fr);  
-    font-size:3.846vh;
+    font-size:3.333vh; /* Text hight with 30 rows (100/30) */
   }
 }
 
-@media only screen 
-and (orientation: portrait)
-and (max-aspect-ratio:14/9) {
+@media (orientation: portrait)
+and (max-aspect-ratio:16/9) {
   .grid-container {
     grid-template-columns: 0fr, repeat(8, 1fr) 0fr;
-    grid-template-rows: repeat(2, 1fr) repeat(2,1fr) repeat(4,1fr) repeat(2,0fr) repeat(14, 1fr) repeat(2,0fr) repeat(4,1fr) repeat(2,1fr) repeat(2,1fr);  
-    font-size:3.333vh;
+    grid-template-rows: repeat(2, 1fr) repeat(2,1fr) repeat(4,1fr) repeat(3, 1fr) repeat(14, 1fr) repeat(3, 1fr) repeat(4,1fr) repeat(2,1fr) repeat(2,1fr);  
+    font-size:2.777vh; /* Text hight with 36 rows (100/34) */
   }
-}*/
+}
 
 
