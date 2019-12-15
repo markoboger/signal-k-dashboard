@@ -13,6 +13,10 @@ function doOnOrientationChange() {
         document.getElementById('rimbox3-2-portrait').id="rimbox3-2"
         document.getElementById('rimbox3-3-portrait').id="rimbox3-3"
         document.getElementById('rimbox3-4-portrait').id="rimbox3-4"
+        document.getElementById('rimbox4-1-portrait').id="rimbox4-1"
+        document.getElementById('rimbox4-2-portrait').id="rimbox4-2"
+        document.getElementById('rimbox4-3-portrait').id="rimbox4-3"
+        document.getElementById('rimbox4-4-portrait').id="rimbox4-4"
         break; 
       default:
         document.getElementById('rimbox1-1').id="rimbox1-1-portrait"
@@ -27,6 +31,10 @@ function doOnOrientationChange() {
         document.getElementById('rimbox3-2').id="rimbox3-2-portrait"
         document.getElementById('rimbox3-3').id="rimbox3-3-portrait"
         document.getElementById('rimbox3-4').id="rimbox3-4-portrait"
+        document.getElementById('rimbox4-1').id="rimbox4-1-portrait"
+        document.getElementById('rimbox4-2').id="rimbox4-2-portrait"
+        document.getElementById('rimbox4-3').id="rimbox4-3-portrait"
+        document.getElementById('rimbox4-4').id="rimbox4-4-portrait"
         break; 
     }
 }
@@ -98,9 +106,14 @@ Vue.component('data-box', {
         aws:'15,89',
         tws:'10,40',
         vmg:'3,40',
+        target:'358',
+        perf:'96,7',
         temp:'21,3',
+        water_temp:'19,0',
         fuel:'89',
+        fuel2:'0',
         bat:'98',
+        bat2:'100',
         stw_avg:'7,89',
         sog_avg:'8,76',
         tws_avg:'11,90',
@@ -110,5 +123,6 @@ Vue.component('data-box', {
         tws_max:'11,90',
         aws_max:'10,99',
         vmg_avg:'3,78',
+        vmg_max:'3,65',
     }
 })
