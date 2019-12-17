@@ -17,6 +17,8 @@ function doOnOrientationChange() {
         document.getElementById('rimbox4-2-portrait').id="rimbox4-2"
         document.getElementById('rimbox4-3-portrait').id="rimbox4-3"
         document.getElementById('rimbox4-4-portrait').id="rimbox4-4"
+        document.getElementById('centerbox5-portrait').id="centerbox5"
+        document.getElementById('centerbox6-portrait').id="centerbox6"
         break; 
       default:
         document.getElementById('rimbox1-1').id="rimbox1-1-portrait"
@@ -35,6 +37,8 @@ function doOnOrientationChange() {
         document.getElementById('rimbox4-2').id="rimbox4-2-portrait"
         document.getElementById('rimbox4-3').id="rimbox4-3-portrait"
         document.getElementById('rimbox4-4').id="rimbox4-4-portrait"
+        document.getElementById('centerbox5').id="centerbox5-portrait"
+        document.getElementById('centerbox6').id="centerbox6-portrait"
         break; 
     }
 }
