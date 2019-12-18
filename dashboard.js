@@ -130,3 +130,12 @@ Vue.component('data-box', {
         vmg_max:'3,65',
     }
 })
+
+var c = document.getElementById("compassrose");
+var ctx = c.getContext("2d");
+let radius=Math.min(c.width, c.height)/2
+ctx.strokestyle = "black";
+ctx.beginPath();
+ctx.arc((c.width/ 2 ), (c.height/ 2 ), radius, 0, 2 * Math.PI);
+
+ctx.stroke();
