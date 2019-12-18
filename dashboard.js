@@ -131,11 +131,17 @@ Vue.component('data-box', {
     }
 })
 
-var c = document.getElementById("compassrose");
-var ctx = c.getContext("2d");
-let radius=Math.min(c.width, c.height)/2
-ctx.strokestyle = "black";
-ctx.beginPath();
-ctx.arc((c.width/ 2 ), (c.height/ 2 ), radius, 0, 2 * Math.PI);
+let container = document.getElementById("rose");
+let canvas = document.getElementById("compassrose");
+let width = container.clientWidth;
+let height = container.clientHeight;
+canvas.width = width;
+canvas.heigth = height;
+let radius=Math.min(width, height)/2;
+console.log("Container has size "+canvas.clientWidth+"x"+canvas.clientHeight+", Radius is "+ radius);
+let context = canvas.getContext("2d");
+context.strokestyle = "black";
+context.beginPath();
+context.arc((canvas.width/ 2 ), (canvas.height/ 2 ), radius, 0, 2 * Math.PI);
 
-ctx.stroke();
+context.stroke();
