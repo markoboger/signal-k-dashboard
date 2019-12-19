@@ -1,26 +1,48 @@
-function drawRose() {
-    let container = document.getElementById("rose");
-    let oldCanvas = document.getElementById("compassrose");
+function addOrResizeCanvas(containerId, canvasId, newWidth, newHeight) {
+    let container = document.getElementById(containerId);
+    let oldCanvas = document.getElementById(canvasId);
     if (oldCanvas) {oldCanvas.parentNode.removeChild(oldCanvas)};
     let newCanvas = document.createElement('canvas');
-    
-    let width =  $("#dashboard").width();
-    let height =  $("#dashboard").height();
-    newCanvas.width = width;
-    newCanvas.height = height;
-    newCanvas.id = 'compassrose';
+    newCanvas.width = newWidth;
+    newCanvas.height = newHeight;
+    newCanvas.id = canvasId;
     container.appendChild(newCanvas); 
-    let radius=Math.min(width, height)/2;
-    console.log("Container has size "+newCanvas.clientWidth+"x"+newCanvas.clientHeight+", Radius is "+ radius);
-    let context = newCanvas.getContext("2d");
+    return newCanvas;
+}
+
+function drawOuterRose(canvas, x, y, radius) {
+    let context = canvas.getContext("2d");
     context.strokestyle = "black";
     context.beginPath();
-  
-    context.arc((width/ 2 ), (height/ 2 ), radius*0.90, 0, 2 * Math.PI);
-    context.arc((width/ 2 ), (height/ 2 ), radius*0.80, 0, 2 * Math.PI);
-    context.arc((width/ 2 ), (height/ 2 ), radius*0.70, 0, 2 * Math.PI);
-    context.arc((width/ 2 ), (height/ 2 ), radius*0.60, 0, 2 * Math.PI);
+    context.arc( x , y , radius, 0, 2 * Math.PI);
     context.stroke();
+}
+
+function drawInnerRose(canvas, x, y, radius) {
+    let context = canvas.getContext("2d");
+    context.strokestyle = "black";
+    context.beginPath();
+    context.arc( x , y , radius, 0, 2 * Math.PI);
+    context.stroke();
+}
+
+
+
+function drawRose() {
+    let width =  $("#dashboard").width();
+    let height =  $("#dashboard").height();
+    let boatroseCanvas = addOrResizeCanvas("rose", "boatrose", width, height);
+    let compassroseCanvas = addOrResizeCanvas("rose", "compassrose", width, height);
+
+    let radius=Math.min(width, height)/2;
+    drawOuterRose(compassroseCanvas, width/2,height/2, radius*0.8);
+    drawOuterRose(compassroseCanvas, width/2,height/2, radius*0.9);
+
+    drawInnerRose(boatroseCanvas,width/2,height/2, radius*0.70);
+    drawInnerRose(boatroseCanvas,width/2,height/2, radius*0.60);
+    let context = boatroseCanvas.getContext("2d");
+    context.drawImage(boatroseCanvas, 0, 0, width, height)
+    context.drawImage(compassroseCanvas, 0, 0, width, height)
 }
 
 function portrait() { return $("#dashboard").width() <= $("#dashboard").height()}
@@ -49,7 +71,11 @@ let newOrientation = true;
 
 function checkOrientationChange() {
     newOrientation = landscape();
-    if (newOrientation != oldOrientation) {doOnOrientationChange();};
+    if (newOrientation != oldOrientation) {
+        doOnOrientationChange();
+    } else {
+        drawRose();
+    }
     oldOrientation=newOrientation;
 }
 
@@ -117,6 +143,7 @@ Vue.component('data-box', {
 $('document').ready(function(){
     window.addEventListener('orientationchange', doOnOrientationChange);
     window.addEventListener('resize', checkOrientationChange);
+    drawRose();
     oldOrientation = true;
     newOrientation = true;
     checkOrientationChange();
