@@ -23,52 +23,37 @@ function drawRose() {
     context.stroke();
 }
 
+function portrait() { return $("#dashboard").width() <= $("#dashboard").height()}
+
+function landscape() { return !(portrait()) } 
+
+function swapoutIdSubstring(oldStr, newStr) {
+    var changeset = document.querySelectorAll("[id*="+oldStr+"]");
+        for (i=0; i < changeset.length; i++) {
+            oldId =changeset[i].id;
+            newId = oldId.replace(oldStr, newStr);
+            changeset[i].id=newId;
+        }  
+}
+
 function doOnOrientationChange() {
-    switch(window.orientation) {  
-      case -90: case 90:
-            var changeset = document.querySelectorAll("[id*='portrait']");
-            for (i=0; i < changeset.length; i++) {
-                oldId =changeset[i].id;
-                newId = oldId.replace("portrait", "landscape")
-                changeset[i].id=newId;
-            }  
-        break; 
-      default:
-            var changeset = document.querySelectorAll("[id*='landscape']");
-            for (i=0; i < changeset.length; i++) {
-                oldId =changeset[i].id;
-                newId = oldId.replace("landscape", "portrait")
-                changeset[i].id=newId;
-            }  
-        break; 
+    if(landscape()){
+        swapoutIdSubstring("portrait","landscape");
+    } else {
+        swapoutIdSubstring("landscape","portrait");
     }
     drawRose();
 }
+let oldOrientation = true;
+let newOrientation = true;
+
+function checkOrientationChange() {
+    newOrientation = landscape();
+    if (newOrientation != oldOrientation) {doOnOrientationChange();};
+    oldOrientation=newOrientation;
+}
 
 Vue.component('data-box', {
-    data: function () {
-      return {
-        data: {
-            content:'12.34'
-        }
-      }
-    },
-    computed:{
-            portrait: function() {
-                if(window.innerHeight > window.innerWidth){
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            landscape:function() {
-                if(window.innerHeight >= window.innerWidth){
-                    return false;
-                } else {
-                    return true;
-                }
-            },
-    },
     props:['abbreviation', 'aggregate','description','icon', 'unit', 'color'],
     template: `
         <div class="data-box-container">
@@ -130,6 +115,9 @@ Vue.component('data-box', {
 })
 
 $('document').ready(function(){
-    drawRose();
     window.addEventListener('orientationchange', doOnOrientationChange);
+    window.addEventListener('resize', checkOrientationChange);
+    oldOrientation = true;
+    newOrientation = true;
+    checkOrientationChange();
 });
