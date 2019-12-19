@@ -11,8 +11,8 @@
   background-color: rgb(248, 93, 3);
 }
 #rose {
-  grid-column: 2 / 10;
-  grid-row: 3 / 35;
+  grid-column: 1 / 11;
+  grid-row: 1 / 37;
   border:1px solid #000000;
 }
 
@@ -47,8 +47,8 @@
 #centerbox2 { grid-column: 5/ span 2; grid-row: 13/ span 4;}
 #centerbox3 { grid-column: 4/ span 2; grid-row: 17/ span 4;}
 #centerbox4 { grid-column: 6/ span 2; grid-row: 17/ span 4;}
-#centerbox5 { grid-column: 2/ span 2; grid-row: 29/ span 6;}
-#centerbox6 { grid-column: 8/ span 2; grid-row: 29/ span 6;}
+#centerbox5-landscape { grid-column: 2/ span 2; grid-row: 29/ span 6;}
+#centerbox6-landscape { grid-column: 8/ span 2; grid-row: 29/ span 6;}
 #centerbox7 { grid-column: 2/ span 2; grid-row: 5/ span 4;}
 #centerbox8 { grid-column: 8/ span 2; grid-row: 5/ span 4;}
 
@@ -61,40 +61,40 @@
   border: 1px solid darkblue;
   border-radius:8px;
 }
-#rimbox1-1 { grid-column: 1; grid-row: 18/ span 2;}
-#rimbox1-2 { grid-column: 1; grid-row: 16/ span 2;}
-#rimbox1-3 { grid-column: 1; grid-row: 14/ span 2;}
-#rimbox1-4 { grid-column: 1; grid-row: 12/ span 2;}
+#rimbox1-1-landscape { grid-column: 1; grid-row: 18/ span 2;}
+#rimbox1-2-landscape { grid-column: 1; grid-row: 16/ span 2;}
+#rimbox1-3-landscape { grid-column: 1; grid-row: 14/ span 2;}
+#rimbox1-4-landscape { grid-column: 1; grid-row: 12/ span 2;}
 
 #rimbox1-1-portrait { grid-column: 5; grid-row: 3/ span 2;}
 #rimbox1-2-portrait { grid-column: 4; grid-row: 3/ span 2;}
 #rimbox1-3-portrait { grid-column: 3; grid-row: 3/ span 2;}
 #rimbox1-4-portrait { grid-column: 2; grid-row: 3/ span 2;}
 
-#rimbox2-1 { grid-column: 1; grid-row: 35/ span 2;}
-#rimbox2-2 { grid-column: 1; grid-row: 31/ span 4;}
-#rimbox2-3 { grid-column: 1; grid-row: 29/ span 2;}
-#rimbox2-4 { grid-column: 1; grid-row: 27/ span 2;}
+#rimbox2-1-landscape { grid-column: 1; grid-row: 35/ span 2;}
+#rimbox2-2-landscape { grid-column: 1; grid-row: 31/ span 4;}
+#rimbox2-3-landscape { grid-column: 1; grid-row: 29/ span 2;}
+#rimbox2-4-landscape { grid-column: 1; grid-row: 27/ span 2;}
 
 #rimbox2-1-portrait { grid-column: 9; grid-row: 3/ span 2;}
 #rimbox2-2-portrait { grid-column: 8; grid-row: 3/ span 2;}
 #rimbox2-3-portrait { grid-column: 7; grid-row: 3/ span 2;}
 #rimbox2-4-portrait { grid-column: 6; grid-row: 3/ span 2;}
 
-#rimbox3-1 { grid-column: 10; grid-row: 18/ span 2;}
-#rimbox3-2 { grid-column: 10; grid-row: 16/ span 2;}
-#rimbox3-3 { grid-column: 10; grid-row: 14/ span 2;}
-#rimbox3-4 { grid-column: 10; grid-row: 12/ span 2;}
+#rimbox3-1-landscape { grid-column: 10; grid-row: 18/ span 2;}
+#rimbox3-2-landscape { grid-column: 10; grid-row: 16/ span 2;}
+#rimbox3-3-landscape { grid-column: 10; grid-row: 14/ span 2;}
+#rimbox3-4-landscape { grid-column: 10; grid-row: 12/ span 2;}
 
 #rimbox3-1-portrait { grid-column: 5; grid-row: 33/ span 2;}
 #rimbox3-2-portrait { grid-column: 4; grid-row: 33/ span 2;}
 #rimbox3-3-portrait { grid-column: 3; grid-row: 33/ span 2;}
 #rimbox3-4-portrait { grid-column: 2; grid-row: 33/ span 2;}
 
-#rimbox4-1 { grid-column: 10; grid-row: 35/ span 2;}
-#rimbox4-2 { grid-column: 10; grid-row: 31/ span 4;}
-#rimbox4-3 { grid-column: 10; grid-row: 29/ span 2;}
-#rimbox4-4 { grid-column: 10; grid-row: 27/ span 2;}
+#rimbox4-1-landscape { grid-column: 10; grid-row: 35/ span 2;}
+#rimbox4-2-landscape { grid-column: 10; grid-row: 31/ span 4;}
+#rimbox4-3-landscape { grid-column: 10; grid-row: 29/ span 2;}
+#rimbox4-4-landscape { grid-column: 10; grid-row: 27/ span 2;}
 
 #rimbox4-1-portrait { grid-column: 9; grid-row: 33/ span 2;}
 #rimbox4-2-portrait { grid-column: 8; grid-row: 33/ span 2;}

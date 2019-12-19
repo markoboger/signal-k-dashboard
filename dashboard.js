@@ -1,51 +1,49 @@
+function drawRose() {
+    let container = document.getElementById("rose");
+    let oldCanvas = document.getElementById("compassrose");
+    if (oldCanvas) {oldCanvas.parentNode.removeChild(oldCanvas)};
+    let newCanvas = document.createElement('canvas');
+    
+    let width =  $("#dashboard").width();
+    let height =  $("#dashboard").height();
+    newCanvas.width = width;
+    newCanvas.height = height;
+    newCanvas.id = 'compassrose';
+    container.appendChild(newCanvas); 
+    let radius=Math.min(width, height)/2;
+    console.log("Container has size "+newCanvas.clientWidth+"x"+newCanvas.clientHeight+", Radius is "+ radius);
+    let context = newCanvas.getContext("2d");
+    context.strokestyle = "black";
+    context.beginPath();
+  
+    context.arc((width/ 2 ), (height/ 2 ), radius*0.90, 0, 2 * Math.PI);
+    context.arc((width/ 2 ), (height/ 2 ), radius*0.80, 0, 2 * Math.PI);
+    context.arc((width/ 2 ), (height/ 2 ), radius*0.70, 0, 2 * Math.PI);
+    context.arc((width/ 2 ), (height/ 2 ), radius*0.60, 0, 2 * Math.PI);
+    context.stroke();
+}
+
 function doOnOrientationChange() {
     switch(window.orientation) {  
       case -90: case 90:
-        document.getElementById('rimbox1-1-portrait').id="rimbox1-1"
-        document.getElementById('rimbox1-2-portrait').id="rimbox1-2"
-        document.getElementById('rimbox1-3-portrait').id="rimbox1-3"
-        document.getElementById('rimbox1-4-portrait').id="rimbox1-4"
-        document.getElementById('rimbox2-1-portrait').id="rimbox2-1"
-        document.getElementById('rimbox2-2-portrait').id="rimbox2-2"
-        document.getElementById('rimbox2-3-portrait').id="rimbox2-3"
-        document.getElementById('rimbox2-4-portrait').id="rimbox2-4"
-        document.getElementById('rimbox3-1-portrait').id="rimbox3-1"
-        document.getElementById('rimbox3-2-portrait').id="rimbox3-2"
-        document.getElementById('rimbox3-3-portrait').id="rimbox3-3"
-        document.getElementById('rimbox3-4-portrait').id="rimbox3-4"
-        document.getElementById('rimbox4-1-portrait').id="rimbox4-1"
-        document.getElementById('rimbox4-2-portrait').id="rimbox4-2"
-        document.getElementById('rimbox4-3-portrait').id="rimbox4-3"
-        document.getElementById('rimbox4-4-portrait').id="rimbox4-4"
-        document.getElementById('centerbox5-portrait').id="centerbox5"
-        document.getElementById('centerbox6-portrait').id="centerbox6"
+            var changeset = document.querySelectorAll("[id*='portrait']");
+            for (i=0; i < changeset.length; i++) {
+                oldId =changeset[i].id;
+                newId = oldId.replace("portrait", "landscape")
+                changeset[i].id=newId;
+            }  
         break; 
       default:
-        document.getElementById('rimbox1-1').id="rimbox1-1-portrait"
-        document.getElementById('rimbox1-2').id="rimbox1-2-portrait"
-        document.getElementById('rimbox1-3').id="rimbox1-3-portrait"
-        document.getElementById('rimbox1-4').id="rimbox1-4-portrait"
-        document.getElementById('rimbox2-1').id="rimbox2-1-portrait"
-        document.getElementById('rimbox2-2').id="rimbox2-2-portrait"
-        document.getElementById('rimbox2-3').id="rimbox2-3-portrait"
-        document.getElementById('rimbox2-4').id="rimbox2-4-portrait"
-        document.getElementById('rimbox3-1').id="rimbox3-1-portrait"
-        document.getElementById('rimbox3-2').id="rimbox3-2-portrait"
-        document.getElementById('rimbox3-3').id="rimbox3-3-portrait"
-        document.getElementById('rimbox3-4').id="rimbox3-4-portrait"
-        document.getElementById('rimbox4-1').id="rimbox4-1-portrait"
-        document.getElementById('rimbox4-2').id="rimbox4-2-portrait"
-        document.getElementById('rimbox4-3').id="rimbox4-3-portrait"
-        document.getElementById('rimbox4-4').id="rimbox4-4-portrait"
-        document.getElementById('centerbox5').id="centerbox5-portrait"
-        document.getElementById('centerbox6').id="centerbox6-portrait"
+            var changeset = document.querySelectorAll("[id*='landscape']");
+            for (i=0; i < changeset.length; i++) {
+                oldId =changeset[i].id;
+                newId = oldId.replace("landscape", "portrait")
+                changeset[i].id=newId;
+            }  
         break; 
     }
+    drawRose();
 }
-  
-window.addEventListener('orientationchange', doOnOrientationChange);
-
-doOnOrientationChange;
 
 Vue.component('data-box', {
     data: function () {
@@ -131,17 +129,7 @@ Vue.component('data-box', {
     }
 })
 
-let container = document.getElementById("rose");
-let canvas = document.getElementById("compassrose");
-let width = container.clientWidth;
-let height = container.clientHeight;
-canvas.width = width;
-canvas.heigth = height;
-let radius=Math.min(width, height)/2;
-console.log("Container has size "+canvas.clientWidth+"x"+canvas.clientHeight+", Radius is "+ radius);
-let context = canvas.getContext("2d");
-context.strokestyle = "black";
-context.beginPath();
-context.arc((canvas.width/ 2 ), (canvas.height/ 2 ), radius, 0, 2 * Math.PI);
-
-context.stroke();
+$('document').ready(function(){
+    drawRose();
+    window.addEventListener('orientationchange', doOnOrientationChange);
+});
