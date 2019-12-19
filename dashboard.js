@@ -15,7 +15,12 @@ function drawOuterRose(canvas, x, y, radius) {
     context.strokestyle = "black";
     context.beginPath();
     context.arc( x , y , radius, 0, 2 * Math.PI);
+    context.moveTo(x,y);
+    context.lineTo(x,y-radius);
     context.stroke();
+    context.translate(x,y);
+    context.rotate(0.25*Math.PI, x, y);
+    context.translate(-x,-y);
 }
 
 function drawInnerRose(canvas, x, y, radius) {
@@ -23,7 +28,10 @@ function drawInnerRose(canvas, x, y, radius) {
     context.strokestyle = "black";
     context.beginPath();
     context.arc( x , y , radius, 0, 2 * Math.PI);
+    context.moveTo(x,y);
+    context.lineTo(x-radius,y);
     context.stroke();
+
 }
 
 
