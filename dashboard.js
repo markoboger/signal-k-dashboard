@@ -15,23 +15,50 @@ function drawOuterRose(canvas, x, y, radius) {
     context.strokestyle = "black";
     context.beginPath();
     context.arc( x , y , radius, 0, 2 * Math.PI);
-    context.moveTo(x,y);
-    context.lineTo(x,y-radius);
     context.stroke();
     context.translate(x,y);
-    context.rotate(0.25*Math.PI, x, y);
+    for(var i = 0; i < 360; i+=10) {
+        var length = 5;
+        if (i%30 ===0) { 
+            length =10;
+            context.fillText(i.toString(),(-4*(Math.ceil(i/100)+1)),-radius+length+2);
+        }
+        context.moveTo(0,radius);
+        context.lineTo(0,radius+length);
+        context.stroke();
+        context.rotate(Math.PI/18);
+    }
+    context.rotate(Math.PI);
     context.translate(-x,-y);
+    context.restore();
+    context.save();
 }
 
 function drawInnerRose(canvas, x, y, radius) {
     let context = canvas.getContext("2d");
     context.strokestyle = "black";
+    context.lineWidth = 1;
+    context.font = '15px '+this.fontFamily;
+    
     context.beginPath();
     context.arc( x , y , radius, 0, 2 * Math.PI);
-    context.moveTo(x,y);
-    context.lineTo(x-radius,y);
     context.stroke();
-
+    context.translate(x,y)
+    for(var i = 0; i < 360; i+=10) {
+        var length = 5;
+        if (i%30 ===0) { 
+            length =10;
+            context.fillText(i.toString(),(-4*(Math.ceil(i/100)+1)),-radius-length-2);
+        }
+        context.moveTo(0,radius);
+        context.lineTo(0,radius+length);
+        context.stroke();
+        context.rotate(Math.PI/18);
+    }
+    context.rotate(Math.PI);
+    context.translate(-x,-y);
+    context.restore();
+    context.save();
 }
 
 
@@ -44,10 +71,7 @@ function drawRose() {
 
     let radius=Math.min(width, height)/2;
     drawOuterRose(compassroseCanvas, width/2,height/2, radius*0.8);
-    drawOuterRose(compassroseCanvas, width/2,height/2, radius*0.9);
-
     drawInnerRose(boatroseCanvas,width/2,height/2, radius*0.70);
-    drawInnerRose(boatroseCanvas,width/2,height/2, radius*0.60);
     let context = boatroseCanvas.getContext("2d");
     context.drawImage(boatroseCanvas, 0, 0, width, height)
     context.drawImage(compassroseCanvas, 0, 0, width, height)
