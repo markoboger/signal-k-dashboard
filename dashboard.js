@@ -17,6 +17,8 @@ function textplacing(radius, length, fontsize, direction) {
     if (direction == 1)  return -radius-(length+fontsize /8)*direction
     else if (direction == -1) return -radius-(length+fontsize/2)*direction
 }
+function degToRad(degrees) { return degrees * (Math.PI/180); }
+function radToDeg(radian) {return radian*180 /Math.PI; }
 
 function drawTicks(context, radius, fontsize, offset, kind) {
     for(var angle = 0; angle < 360; angle+=10) {
@@ -66,9 +68,39 @@ function drawCircularScale(canvas, x, y, radius, offset, rotation, kind) {
     let fontsize = fontsizeForRadius(radius);
     context.font =  (fontsize).toString +'px '+this.fontFamily;
     context.translate(x,y);
-    context.beginPath();
-    context.arc( 0 , 0 , radius, 0, 2 * Math.PI);
-    context.stroke();
+    if (kind == "boat") {
+        context.rotate(-Math.PI/2);
+        context.beginPath();
+        context.strokeStyle = "black";
+        context.arc( 0 , 0 , radius, 0, degToRad(25)); 
+        context.stroke();
+        context.beginPath();
+        context.lineWidth = 2;
+        context.strokeStyle = "forestgreen";
+        context.arc( 0 , 0 , radius, degToRad(25), degToRad(60));
+        context.stroke();
+        context.beginPath();
+        context.lineWidth = 1;
+        context.strokeStyle = "black";
+        context.arc( 0 , 0 , radius, degToRad(60), degToRad(300));
+        context.stroke();
+        context.beginPath();
+        context.lineWidth = 2;
+        context.strokeStyle = "red";
+        context.arc( 0 , 0 , radius, degToRad(300), degToRad(335));
+        context.stroke();
+        context.beginPath();
+        context.lineWidth = 1;
+        context.strokeStyle = "black";
+        context.arc( 0 , 0 , radius, degToRad(335), 2 * Math.PI);
+        context.stroke();
+        context.rotate(Math.PI/2);
+    } else {
+        context.beginPath();
+        context.arc( 0 , 0 , radius, 0, 2 * Math.PI);
+        context.stroke();
+    }
+    //context.stroke();
     drawTicks(context, radius, fontsize, offset, kind);
     if (kind == "compass") {
         drawNorthSouth(context, radius, fontsize, offset *(-1))
@@ -76,7 +108,6 @@ function drawCircularScale(canvas, x, y, radius, offset, rotation, kind) {
     console.log ("Rotation is " + rotation + " and kind is " +kind);
     context.rotate(rotation);
     context.translate(-x,-y);
-    context.save();
 }
 
 function drawRose(innerAngle, outerAngle) {
@@ -105,7 +136,6 @@ function swapoutIdSubstring(oldStr, newStr) {
 }
 
 let hdg = Math.PI;
-function degToRad(degrees) { return degrees * (Math.PI/180); }
 
 function doOnOrientationChange() {
     if(landscape()){
