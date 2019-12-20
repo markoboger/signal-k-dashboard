@@ -11,22 +11,26 @@ function addOrResizeCanvas(containerId, canvasId, newWidth, newHeight) {
 }
 
 function fontsizeForRadius(radius) { return radius/20; }
-function digits(number) { return (Math.floor(Math.log10(number))+1); }
+function digits(number) { if (number ==0 ) {return 1} else {return (Math.floor(Math.log10(number))+1); }}
+function textplacing(radius, length, fontsize, direction) { 
+    if (direction == 1)  return -radius-(length+fontsize /8)*direction
+    else if (direction == -1) return -radius-(length+fontsize/2)*direction
+}
 
-function drawOuterRose(canvas, x, y, radius, direction) {
+function drawCicularScale(canvas, x, y, radius, direction) {
     let context = canvas.getContext("2d");
     context.strokestyle = "black";
     let fontsize = fontsizeForRadius(radius);
     context.font =  (fontsize).toString +'px '+this.fontFamily;
-    context.beginPath();
-    context.arc( x , y , radius, 0, 2 * Math.PI);
-    context.stroke();
     context.translate(x,y);
+    context.beginPath();
+    context.arc( 0 , 0 , radius, 0, 2 * Math.PI);
+    context.stroke();
     for(var i = 0; i < 360; i+=10) {
         var length = fontsize/4;
         if (i%30 ==0) { 
             length =length*2;
-            context.fillText(i.toString(),((-fontsize/6)*digits(i)),-radius-(length+fontsize/2)*direction);
+            context.fillText(i.toString(),((-fontsize/6)*digits(i)),textplacing(radius, length, fontsize, direction));
         }
         context.moveTo(0,-radius);
         context.lineTo(0,-radius-(length)*direction);
@@ -34,8 +38,6 @@ function drawOuterRose(canvas, x, y, radius, direction) {
         context.rotate(Math.PI/18);
     }
     context.translate(-x,-y);
-    context.restore();
-    context.save();
 }
 
 function drawRose() {
@@ -45,8 +47,8 @@ function drawRose() {
     let compassroseCanvas = addOrResizeCanvas("rose", "compassrose", width, height);
 
     let radius=Math.min(width, height)/2;
-    drawOuterRose(compassroseCanvas, width/2,height/2, radius*0.8, -1);
-    drawOuterRose(boatroseCanvas, width/2,height/2, radius*0.7, 1);
+    drawCicularScale(compassroseCanvas, width/2,height/2, radius*0.8, -1);
+    drawCicularScale(boatroseCanvas, width/2,height/2, radius*0.7, 1);
     let context = boatroseCanvas.getContext("2d");
     context.drawImage(boatroseCanvas, 0, 0, width, height);
     context.drawImage(compassroseCanvas, 0, 0, width, height);
