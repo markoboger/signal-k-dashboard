@@ -10,58 +10,33 @@ function addOrResizeCanvas(containerId, canvasId, newWidth, newHeight) {
     return newCanvas;
 }
 
-function drawOuterRose(canvas, x, y, radius) {
+function fontsizeForRadius(radius) { return radius/20; }
+function digits(number) { return (Math.floor(Math.log10(number))+1); }
+
+function drawOuterRose(canvas, x, y, radius, direction) {
     let context = canvas.getContext("2d");
     context.strokestyle = "black";
+    let fontsize = fontsizeForRadius(radius);
+    context.font =  (fontsize).toString +'px '+this.fontFamily;
     context.beginPath();
     context.arc( x , y , radius, 0, 2 * Math.PI);
     context.stroke();
     context.translate(x,y);
     for(var i = 0; i < 360; i+=10) {
-        var length = 5;
-        if (i%30 ===0) { 
-            length =10;
-            context.fillText(i.toString(),(-4*(Math.ceil(i/100)+1)),-radius+length+2);
+        var length = fontsize/4;
+        if (i%30 ==0) { 
+            length =length*2;
+            context.fillText(i.toString(),((-fontsize/6)*digits(i)),-radius-(length+fontsize/2)*direction);
         }
-        context.moveTo(0,radius);
-        context.lineTo(0,radius+length);
+        context.moveTo(0,-radius);
+        context.lineTo(0,-radius-(length)*direction);
         context.stroke();
         context.rotate(Math.PI/18);
     }
-    context.rotate(Math.PI);
     context.translate(-x,-y);
     context.restore();
     context.save();
 }
-
-function drawInnerRose(canvas, x, y, radius) {
-    let context = canvas.getContext("2d");
-    context.strokestyle = "black";
-    context.lineWidth = 1;
-    context.font = '15px '+this.fontFamily;
-    
-    context.beginPath();
-    context.arc( x , y , radius, 0, 2 * Math.PI);
-    context.stroke();
-    context.translate(x,y)
-    for(var i = 0; i < 360; i+=10) {
-        var length = 5;
-        if (i%30 ===0) { 
-            length =10;
-            context.fillText(i.toString(),(-4*(Math.ceil(i/100)+1)),-radius-length-2);
-        }
-        context.moveTo(0,radius);
-        context.lineTo(0,radius+length);
-        context.stroke();
-        context.rotate(Math.PI/18);
-    }
-    context.rotate(Math.PI);
-    context.translate(-x,-y);
-    context.restore();
-    context.save();
-}
-
-
 
 function drawRose() {
     let width =  $("#dashboard").width();
@@ -70,15 +45,14 @@ function drawRose() {
     let compassroseCanvas = addOrResizeCanvas("rose", "compassrose", width, height);
 
     let radius=Math.min(width, height)/2;
-    drawOuterRose(compassroseCanvas, width/2,height/2, radius*0.8);
-    drawInnerRose(boatroseCanvas,width/2,height/2, radius*0.70);
+    drawOuterRose(compassroseCanvas, width/2,height/2, radius*0.8, -1);
+    drawOuterRose(boatroseCanvas, width/2,height/2, radius*0.7, 1);
     let context = boatroseCanvas.getContext("2d");
-    context.drawImage(boatroseCanvas, 0, 0, width, height)
-    context.drawImage(compassroseCanvas, 0, 0, width, height)
+    context.drawImage(boatroseCanvas, 0, 0, width, height);
+    context.drawImage(compassroseCanvas, 0, 0, width, height);
 }
 
 function portrait() { return $("#dashboard").width() <= $("#dashboard").height()}
-
 function landscape() { return !(portrait()) } 
 
 function swapoutIdSubstring(oldStr, newStr) {
