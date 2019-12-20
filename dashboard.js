@@ -11,14 +11,56 @@ function addOrResizeCanvas(containerId, canvasId, newWidth, newHeight) {
     return newCanvas;
 }
 
-function fontsizeForRadius(radius) { return radius/20; }
+function fontsizeForRadius(radius) { return Math.ceil(radius/20); }
 function digits(number) { if (number ==0 ) {return 1} else {return (Math.floor(Math.log10(number))+1); }}
 function textplacing(radius, length, fontsize, direction) { 
     if (direction == 1)  return -radius-(length+fontsize /8)*direction
     else if (direction == -1) return -radius-(length+fontsize/2)*direction
 }
 
-function drawCircularScale(canvas, x, y, radius, direction, angle) {
+function drawTicks(context, radius, fontsize, offset, kind) {
+    for(var angle = 0; angle < 360; angle+=10) {
+        var length = fontsize/4;
+        var inscription = -1;
+        if (angle % 30 == 0) {
+            length=length*2;
+        }
+        if ( angle%30 == 0 && (kind == "compass" || angle <= 180))  { 
+            inscription = angle
+        }
+        if ((angle%30 ==0 && kind == "boat" && angle > 180) || (angle ==0 && kind == "compass")) { 
+            inscription = 360-angle
+        }
+        if ((inscription > 0) || (inscription == 0 && kind =="boat")) {
+             context.fillText(inscription.toString(),((-fontsize/6)*digits(inscription)),textplacing(radius, length, fontsize, offset));
+        }
+        context.moveTo(0,-radius);
+        context.lineTo(0,-radius-(length)*offset);
+        context.stroke();
+        context.rotate(Math.PI/18);
+    }
+}
+
+function drawNorthSouth(context, radius, fontsize, offset) {
+    for(var angle = 0; angle < 360; angle+=90) {
+        var length = fontsize/4;
+        var inscription = 'N';
+        if (angle  == 90) {
+            inscription = "E"
+        }
+        if (angle == 180) {
+            inscription = "S"
+        }
+        if (angle == 270) {
+            inscription = "W"
+        }
+        context.fillText(inscription,(-fontsize/6),textplacing(radius, length, fontsize, offset));
+        context.stroke();
+        context.rotate(Math.PI/2);
+    }
+}
+
+function drawCircularScale(canvas, x, y, radius, offset, rotation, kind) {
     let context = canvas.getContext("2d");
     context.strokestyle = "black";
     let fontsize = fontsizeForRadius(radius);
@@ -27,24 +69,14 @@ function drawCircularScale(canvas, x, y, radius, direction, angle) {
     context.beginPath();
     context.arc( 0 , 0 , radius, 0, 2 * Math.PI);
     context.stroke();
-    for(var i = 0; i < 360; i+=10) {
-        var length = fontsize/4;
-        if (i%90 == 0) {
-            context.font =  (fontsize*2).toString +'px '+this.fontFamily;
-        } else {
-            context.font =  (fontsize).toString +'px '+this.fontFamily;
-        }
-        if (i%30 == 0) { 
-            length =length*2;
-            context.fillText(i.toString(),((-fontsize/6)*digits(i)),textplacing(radius, length, fontsize, direction));
-        }
-        context.moveTo(0,-radius);
-        context.lineTo(0,-radius-(length)*direction);
-        context.stroke();
-        context.rotate(Math.PI/18);
+    drawTicks(context, radius, fontsize, offset, kind);
+    if (kind == "compass") {
+        drawNorthSouth(context, radius, fontsize, offset *(-1))
     }
-    context.rotate(angle);
+    console.log ("Rotation is " + rotation + " and kind is " +kind);
+    context.rotate(rotation);
     context.translate(-x,-y);
+    context.save();
 }
 
 function drawRose(innerAngle, outerAngle) {
@@ -54,8 +86,8 @@ function drawRose(innerAngle, outerAngle) {
     let compassroseCanvas = addOrResizeCanvas("rose", "compassrose", width, height);
 
     let radius=Math.min(width, height)/2;
-    drawCircularScale(compassroseCanvas, width/2,height/2, radius*0.8, -1, outerAngle);
-    drawCircularScale(boatroseCanvas, width/2,height/2, radius*0.7, 1, innerAngle);
+    drawCircularScale(compassroseCanvas, width/2,height/2, radius*0.8, -1, Math.PI, "compass");
+    drawCircularScale(boatroseCanvas, width/2,height/2, radius*0.7, 1, innerAngle,"boat");
     let context = boatroseCanvas.getContext("2d");
     context.drawImage(compassroseCanvas, 0, 0, width, height);
 }
@@ -83,9 +115,9 @@ function doOnOrientationChange() {
     }
     drawRose(0,hdg);
 }
+
 let oldOrientation = true;
 let newOrientation = true;
-
 function checkOrientationChange() {
     newOrientation = landscape();
     if (newOrientation != oldOrientation) {
