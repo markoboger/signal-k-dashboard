@@ -75,7 +75,7 @@ function drawCircularScale(canvas, x, y, radius, offset, rotation, kind) {
         context.arc( 0 , 0 , radius, 0, degToRad(25)); 
         context.stroke();
         context.beginPath();
-        context.lineWidth = 2;
+        context.lineWidth = 3;
         context.strokeStyle = "forestgreen";
         context.arc( 0 , 0 , radius, degToRad(25), degToRad(60));
         context.stroke();
@@ -85,7 +85,7 @@ function drawCircularScale(canvas, x, y, radius, offset, rotation, kind) {
         context.arc( 0 , 0 , radius, degToRad(60), degToRad(300));
         context.stroke();
         context.beginPath();
-        context.lineWidth = 2;
+        context.lineWidth = 3;
         context.strokeStyle = "red";
         context.arc( 0 , 0 , radius, degToRad(300), degToRad(335));
         context.stroke();
@@ -169,7 +169,9 @@ Vue.component('data-box', {
                 {{aggregate}}
             </div>
             <div class="data-box-icon">
-                {{icon}} 
+             
+                    {{icon}} 
+              
             </div>
             <div class="data-box-content"> <slot></slot>
             </div>
@@ -179,47 +181,60 @@ Vue.component('data-box', {
             <div class="data-box-unit">
                 {{unit}}
             </div>
-        </div>`
-    })
-
-
-    var dashboard = new Vue({
-        el:"#dashboard",
-        data:{
-            lat:'50° 34,56',
-            lon:'009° 56,89',
-            time:"12:36:56",
-            countdown:"00:45:20",
-            rpm:"2700 RPM",
-            log:"12,345 nm",
-            heading:'360',
-            depth:'18,5',
-            stw:'12,34',
-            sog:'8,90',
-            hdg:'240',
-            aws:'15,89',
-            tws:'10,40',
-            vmg:'3,40',
-            target:'358',
-            perf:'96,7',
-            temp:'21,3',
-            water_temp:'19,0',
-            fuel:'89',
-            fuel2:'0',
-            bat:'98',
-            bat2:'100',
-            stw_avg:'7,89',
-            sog_avg:'8,76',
-            tws_avg:'11,90',
-            aws_avg:'10,99',
-            stw_max:'7,89',
-            sog_max:'8,76',
-            tws_max:'11,90',
-            aws_max:'10,99',
-            vmg_avg:'3,78',
-            vmg_max:'3,65',
+        </div>`,
+        methods: {
+            handleClick() {
+              this.$emit('click');
+              console.log("got the handleClick");
+          }
         }
+    
     })
+
+
+new Vue({
+    el:"#dashboard",
+    data:{
+        lat:'50° 34,56',
+        lon:'009° 56,89',
+        time:"12:36:56",
+        countdown:"00:45:20",
+        rpm:"2700 RPM",
+        log:"12,345 nm",
+        heading:'360',
+        depth:'18,5',
+        stw:'12,34',
+        sog:'8,90',
+        hdg:'240',
+        aws:'15,89',
+        tws:'10,40',
+        vmg:'3,40',
+        target:'358',
+        perf:'96,7',
+        temp:'21,3',
+        water_temp:'19,0',
+        fuel:'89',
+        fuel2:'0',
+        bat:'98',
+        bat2:'100',
+        stw_avg:'7,89',
+        sog_avg:'8,76',
+        tws_avg:'11,90',
+        aws_avg:'10,99',
+        stw_max:'7,89',
+        sog_max:'8,76',
+        tws_max:'11,90',
+        aws_max:'10,99',
+        vmg_avg:'3,78',
+        vmg_max:'3,65'
+    },
+    methods:{
+            toggleMessage () {
+              console.log("got the toggle Message");
+          }
+        
+    }
+})
     
 $('document').ready(function(){
     window.addEventListener('orientationchange', doOnOrientationChange);

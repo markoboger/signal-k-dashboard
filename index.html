@@ -14,10 +14,10 @@
         <data-box class="textbox"   id=textbox2>{{time}} <br> {{countdown}}</data-box>
         <data-box class="textbox"   id=textbox3>{{rpm}} <br> {{log}}</data-box>
 
-        <data-box class="topbox"    description="Heading">{{heading}}</data-box>
+        <data-box class="topbox"    @click="toggleMessage()" description="Heading">{{heading}}</data-box>
         <data-box class="bottombox" description="Depth" unit="m">{{depth}}</data-box>
 
-        <data-box class="centerbox" id="centerbox1" abbreviation="STW"                 icon="@" description="Speed thru Water" unit="kn" color="darkblue">{{stw}}</data-box>
+        <data-box class="centerbox" id="centerbox1"  @click="toggleMessage()" abbreviation="STW"                 icon="@" description="Speed thru Water" unit="kn" color="darkblue">{{stw}}</data-box>
         <data-box class="centerbox" id="centerbox2" abbreviation="SOG"                 icon="@" description="Speed over Grnd"  unit="kn" color="blue">{{sog}}</data-box>
         <data-box class="centerbox" id="centerbox3" abbreviation="AWS"                 icon="@" description="App. Wind Speed"  unit="kn" color="">{{aws}}</data-box>
         <data-box class="centerbox" id="centerbox4" abbreviation="TWS"                 icon="@" description="True Wind Speed"  unit="kn" color="darkgreen">{{tws}}</data-box>
@@ -46,8 +46,9 @@
         <data-box class="rimbox"    id="rimbox4-2-landscape"  abbreviation="Bat2"                 icon="@" description="Battery"         unit="%"  color="">{{bat2}}</data-box>
         <data-box class="rimbox"    id="rimbox4-3-landscape"  abbreviation="Fuel2"                icon="@" description="Fuel 2"          unit="%"  color="">{{fuel2}}</data-box>
         <data-box class="rimbox"    id="rimbox4-4-landscape"  abbreviation="VMG" aggregate="Max" icon="@" description="App. Wind Speed"  unit="kn" color="">{{vmg_max}}</data-box>
-
+    
        </div>
+       
        <script src="./dashboard.js"></script>
        <script type="text/javascript+module" src="./src/registerServiceWorker.js"></script>
 
