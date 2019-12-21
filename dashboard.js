@@ -13,6 +13,11 @@ function addOrResizeCanvas(containerId, canvasId, newWidth, newHeight) {
 
 function fontsizeForRadius(radius) { return Math.ceil(radius/25); }
 function digits(number) { if (number ==0 ) {return 1} else {return (Math.floor(Math.log10(number))+1); }}
+function halfLengthOfNumber(number, fontsize) {return halfLengthOfText( number.toString(), fontsize)}
+function halfLengthOfText(text, fontsize){
+    let fontwidth=fontsize/1.8;
+    return (((text.length-1)/2)*fontwidth + fontwidth/2);
+}
 function textplacing(radius, length, fontsize, direction) { 
     if (direction == 1)  return -radius-(length+fontsize /8)*direction
     else if (direction == -1) return -radius-(length+fontsize)*direction
@@ -39,7 +44,7 @@ function drawTicks(context, radius, fontsize, offset, kind) {
             inscription = 360-angle
         }
         if ((inscription > 0) || (inscription == 0 && kind =="boat")) {
-             context.fillText(inscription.toString(),((-fontsize/4)*digits(inscription)),textplacing(radius, length, fontsize, offset));
+             context.fillText(inscription.toString(),-halfLengthOfNumber(inscription,fontsize),textplacing(radius, length, fontsize, offset));
         }
         context.moveTo(0,-radius);
         context.lineTo(0,-radius-(length)*offset);
@@ -48,18 +53,106 @@ function drawTicks(context, radius, fontsize, offset, kind) {
     }
 }
 
+function drawGauge(text, abbreviation, canvas,x,y,radius,fontsize, offset) {
+    let context = canvas.getContext("2d");
+    let bendstrength =fontsize*1.6;
+    let ticklength=8;
+    let tipradius = radius+1;
+    let baseradius = radius*1.2;
+    let inscriptionradius = radius*1.125;
+    let bendradius = radius*1.125;
+    let abbreviationradius = radius*1.08;
+    if (offset == -1) {
+        tipradius = radius-2;
+        baseradius = radius/1.25;
+        inscriptionradius = radius/1.2;
+        bendradius = radius/1.125;
+        abbreviationradius = radius/1.116;
+    }
+    context.translate(x,y);
+    context.beginPath();
+    context.moveTo(0, -tipradius);
+    context.bezierCurveTo(bendstrength, -bendradius, bendstrength, -baseradius, 0, -baseradius);
+    context.stroke();
+    context.moveTo(0, -tipradius);
+    context.bezierCurveTo(-bendstrength, -bendradius, -bendstrength, -baseradius, 0, -baseradius);
+    context.stroke();
+    context.beginPath();
+    context.moveTo(0, -tipradius);
+    context.lineTo(0, -(tipradius + ticklength*offset));
+    context.stroke();
+    context.font =  (fontsize).toString() +'px Arial';
+    context.fillText(text,-halfLengthOfText(text,fontsize),-inscriptionradius);
+    fontsize=Math.ceil(fontsize/2);
+    context.font =  (fontsize).toString() +'px Arial';
+    context.fillText(abbreviation,-halfLengthOfText(abbreviation,fontsize),-abbreviationradius);
+    context.translate(-x,-y);
+}
+
+function drawArrow(context, fromx, fromy, tox, toy, r){
+    var angle;
+    var x;
+    var y;
+
+    context.beginPath();
+
+    angle = Math.atan2(toy-fromy,tox-fromx)
+    x = r*Math.cos(angle);
+    y = r*Math.sin(angle);
+
+    context.moveTo(x, y);
+
+    angle += (1/3)*(2*Math.PI)
+    x = r*Math.cos(angle);
+    y = r*Math.sin(angle);
+
+    context.lineTo(x, y);
+
+    angle += (1/3)*(2*Math.PI)
+    x = r*Math.cos(angle);
+    y = r*Math.sin(angle);
+
+    context.lineTo(x, y);
+
+    //context.closePath();
+
+    //context.fill();
+}
+
+function drawForce(strength, canvas,x,y,radius) {
+    let context = canvas.getContext("2d");
+    context.translate(x,y);
+    context.beginPath();
+    context.lineWidth=10;
+    context.moveTo(0, -radius);
+    context.lineTo(0, -(radius-(strength*10)));
+    context.stroke();
+    let r=20;
+    let angle =Math.PI;
+    for (i=0; i==2; i++) {
+        angle += (1/3)*(2*Math.PI);
+        context.lineTo(0 + r*Math.cos(angle),-(radius-(strength*10)) - r*Math.sin(angle));
+    }
+    context.lineTo(0, -(radius-(strength*10)));
+    //context.closePath();
+    //context.fill();
+    context.stroke;
+    context.translate(-x,-y);
+}
+
+
 function drawNorthSouth(context, radius, fontsize, offset) {
     for(var angle = 0; angle < 360; angle+=90) {
         var length = fontsize/4;
         var inscription = 'N';
         if (angle  == 90) {
-            inscription = "E"
+            inscription = "E";
         }
         if (angle == 180) {
-            inscription = "S"
+            inscription = "S";
         }
         if (angle == 270) {
-            inscription = "W"
+            inscription = "W";
         }
         context.font =  (fontsize+4).toString() +'px '+this.fontFamily;
         context.fillText(inscription,(-(fontsize+4)/3),textplacing(radius, length, fontsize, offset));
@@ -68,10 +161,9 @@ function drawNorthSouth(context, radius, fontsize, offset) {
     }
 }
 
-function drawCircularScale(canvas, x, y, radius, offset, rotationarg, kind) {
+function drawCircularScale(canvas, x, y, radius, fontsize, offset, rotationarg, kind) {
     let context = canvas.getContext("2d");
     context.strokestyle = "black";
-    let fontsize = fontsizeForRadius(radius);
     context.font =  (fontsize).toString() +'px '+this.fontFamily;
     context.translate(x,y);
     if (kind == "boat") {
@@ -110,7 +202,7 @@ function drawCircularScale(canvas, x, y, radius, offset, rotationarg, kind) {
     if (kind == "compass") {
         drawNorthSouth(context, radius, fontsize, offset *(-1))
     }
-    let rotation = rotationarg;
+    let rotation = 2.222;
     console.log ("Rotation is " + rotation + " and kind is " +kind);
     context.rotate(rotation);
     context.translate(-x,-y);
@@ -119,12 +211,17 @@ function drawCircularScale(canvas, x, y, radius, offset, rotationarg, kind) {
 function drawRose(innerAngle, outerAngle) {
     let width =  $("#dashboard").width();
     let height =  $("#dashboard").height();
+    
     let boatroseCanvas = addOrResizeCanvas("rose", "boatrose", width, height);
     let compassroseCanvas = addOrResizeCanvas("rose", "compassrose", width, height);
 
     let radius=Math.min(width, height)/2;
-    drawCircularScale(compassroseCanvas, width/2,height/2, radius*0.8, -1, 1.2345, "compass");
-    drawCircularScale(boatroseCanvas, width/2,height/2, radius*0.7, 1, innerAngle,"boat");
+    let fontsize = fontsizeForRadius(radius*0.8);
+    drawCircularScale(compassroseCanvas, width/2,height/2, radius*0.8, fontsize, -1, 1.2345, "compass");
+    drawGauge('248','TWD',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1);
+    drawGauge('237','TWA',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1);
+    drawCircularScale(boatroseCanvas, width/2,height/2, radius*0.7, fontsize, 1, innerAngle,"boat");
+    drawForce(10,compassroseCanvas,width/2,height/2,radius*0.60);
     let context = boatroseCanvas.getContext("2d");
     context.drawImage(compassroseCanvas, 0, 0, width, height);
 }
@@ -132,22 +229,21 @@ function drawRose(innerAngle, outerAngle) {
 function portrait() { return $("#dashboard").width() <= $("#dashboard").height()}
 function landscape() { return !(portrait()) } 
 
-function swapoutIdSubstring(oldStr, newStr) {
-    var changeset = document.querySelectorAll("[id*="+oldStr+"]");
-        for (i=0; i < changeset.length; i++) {
-            oldId =changeset[i].id;
-            newId = oldId.replace(oldStr, newStr);
-            changeset[i].id=newId;
-        }  
+function swapoutIdSubstring(changeset, oldStr, newStr) {
+    for (i=0; i < changeset.length; i++) {
+        oldId =changeset[i].id;
+        newId = oldId.replace(oldStr, newStr);
+        changeset[i].id=newId;
+    }  
 }
 
 let hdg = Math.PI;
 
 function doOnOrientationChange() {
     if(landscape()){
-        swapoutIdSubstring("portrait","landscape");
+        swapoutIdSubstring(document.querySelectorAll("[id*=portrait]"),"portrait","landscape");
     } else {
-        swapoutIdSubstring("landscape","portrait");
+        swapoutIdSubstring(document.querySelectorAll("[id*=landscape]"),"landscape","portrait");
     }
     drawRose(0,hdg);
 }
@@ -163,6 +259,44 @@ function checkOrientationChange() {
     }
     oldOrientation=newOrientation;
 }
+/*
+import Vue from 'vue'
+import DrawerLayout from './node_modules/vue-drawer-layout'
+Vue.use(DrawerLayout);*/
+
+Vue.component('wind-rose', {
+    template:`<div id="rose">
+            
+    </div>`
+})
+
+Vue.component('rose-gauge', {
+    props:['abbreviation', 'degree'],
+    template:`<div id="gauge">
+          {{drawRoseGauge()}}  
+    </div>`,
+    methods:{ 
+        drawRoseGauge: function() {
+            console.log("DrawRoseGauge is called");
+            let width =  $("#dashboard").width();
+            let height =  $("#dashboard").height();
+            
+            let boatroseCanvas = addOrResizeCanvas("rose", "boatrose", width, height);
+            let compassroseCanvas = addOrResizeCanvas("rose", "compassrose", width, height);
+
+            let radius=Math.min(width, height)/2;
+            let fontsize = fontsizeForRadius(radius*0.8);
+            drawGauge(degree,abbreviation,compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1);
+        }
+    }
+})
+
+Vue.component('rose-force', {
+    props:['abbreviation','force'],
+    template:`<div id="force">
+            
+    </div>`
+})
 
 Vue.component('data-box', {
     props:['abbreviation', 'aggregate','description','icon', 'unit', 'color'],
@@ -232,7 +366,8 @@ new Vue({
         tws_max:'11,90',
         aws_max:'10,99',
         vmg_avg:'3,78',
-        vmg_max:'3,65'
+        vmg_max:'3,65',
+        twa:'290'
     },
     methods:{
             toggleMessage () {

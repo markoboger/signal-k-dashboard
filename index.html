@@ -7,9 +7,13 @@
     </head>
     <body>
        <div id="dashboard" class="grid-container">
-        <div id="rose">
-            
-        </div>
+
+        <wind-rose>
+            <rose-gauge class="relToNorth" abbreviation="TWD" degree="{{twd}}">  </rose-gauge>
+            <rose-gauge class="relToBoat" abbreviation="TWA" degree="{{twa}}">  </rose-gauge>
+            <rose-force class="relToNorth" abbreviation="TWS" strength="{{tws}}">  </rose-force>
+        </wind-rose>
+ 
         <data-box class="textbox"   id="textbox1">{{lat}} <br> {{lon}}</data-box>   
         <data-box class="textbox"   id=textbox2>{{time}} <br> {{countdown}}</data-box>
         <data-box class="textbox"   id=textbox3>{{rpm}} <br> {{log}}</data-box>
