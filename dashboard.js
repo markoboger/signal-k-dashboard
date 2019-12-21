@@ -89,34 +89,31 @@ function drawGauge(text, abbreviation, canvas,x,y,radius,fontsize, offset) {
     context.translate(-x,-y);
 }
 
-function drawArrow(context, fromx, fromy, tox, toy, r){
-    var angle;
-    var x;
-    var y;
-
+function drawMarker(abbreviation,degree, canvas,x,y,radius, fontsize, offset) {
+    let shiftin =0;
+    let shiftout=0;
+    if (offset == 1) {
+        shiftin = -fontsize;
+        shiftout=+fontsize/8;
+    } else if (offset == -1) {
+        shiftin = +fontsize/8;
+        shiftout= -fontsize;
+    }
+    let context = canvas.getContext("2d");
+    context.translate(x,y);
+    context.rotate(degToRad(30));
     context.beginPath();
+    context.lineWidth=1;
+    context.fillStyle="green";
+    context.arc( 0 , -radius, 16, 0, Math.PI*2);
+    context.fill();
+    context.stroke();
+    context.fillStyle="black";
+    context.font =  (fontsize).toString() +'px Arial';
+    context.fillText(abbreviation,-halfLengthOfText(abbreviation,fontsize),-(radius + shiftout));
+    context.fillText(degree,-halfLengthOfNumber(degree,fontsize),-(radius + shiftin));
 
-    angle = Math.atan2(toy-fromy,tox-fromx)
-    x = r*Math.cos(angle);
-    y = r*Math.sin(angle);
-
-    context.moveTo(x, y);
-
-    angle += (1/3)*(2*Math.PI)
-    x = r*Math.cos(angle);
-    y = r*Math.sin(angle);
-
-    context.lineTo(x, y);
-
-    angle += (1/3)*(2*Math.PI)
-    x = r*Math.cos(angle);
-    y = r*Math.sin(angle);
-
-    context.lineTo(x, y);
-
-    //context.closePath();
-
-    //context.fill();
+    context.translate(-x,-y);
 }
 
 function drawForce(strength, canvas,x,y,radius) {
@@ -222,6 +219,8 @@ function drawRose(innerAngle, outerAngle) {
     drawGauge('237','TWA',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1);
     drawCircularScale(boatroseCanvas, width/2,height/2, radius*0.7, fontsize, 1, innerAngle,"boat");
     drawForce(10,compassroseCanvas,width/2,height/2,radius*0.60);
+    drawMarker('WP','50', compassroseCanvas, width/2, height/2, radius*0.8, fontsize, 1);
+    drawMarker('OT','250', boatroseCanvas, width/2, height/2, radius*0.7, fontsize, -1);
     let context = boatroseCanvas.getContext("2d");
     context.drawImage(compassroseCanvas, 0, 0, width, height);
 }
@@ -271,7 +270,7 @@ Vue.component('wind-rose', {
 })
 
 Vue.component('rose-gauge', {
-    props:['abbreviation', 'degree'],
+    props:['abbreviation', 'degree', 'color'],
     template:`<div id="gauge">
           {{drawRoseGauge()}}  
     </div>`,
@@ -292,7 +291,14 @@ Vue.component('rose-gauge', {
 })
 
 Vue.component('rose-force', {
-    props:['abbreviation','force'],
+    props:['abbreviation','strength', 'degree', 'color'],
+    template:`<div id="force">
+            
+    </div>`
+})
+
+Vue.component('rose-marker', {
+    props:['abbreviation', 'degree', 'color'],
     template:`<div id="force">
             
     </div>`
@@ -345,9 +351,14 @@ new Vue({
         depth:'18,5',
         stw:'12,34',
         sog:'8,90',
+        cog:'10',
         hdg:'240',
         aws:'15,89',
+        awa: '345',
+        awd: '335',
         tws:'10,40',
+        twa:'289',
+        twd:'271',
         vmg:'3,40',
         target:'358',
         perf:'96,7',
@@ -367,7 +378,9 @@ new Vue({
         aws_max:'10,99',
         vmg_avg:'3,78',
         vmg_max:'3,65',
-        twa:'290'
+        ot:'90',
+        wp:'355',
+        drag:'3'
     },
     methods:{
             toggleMessage () {
