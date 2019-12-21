@@ -11,11 +11,11 @@ function addOrResizeCanvas(containerId, canvasId, newWidth, newHeight) {
     return newCanvas;
 }
 
-function fontsizeForRadius(radius) { return Math.ceil(radius/20); }
+function fontsizeForRadius(radius) { return Math.ceil(radius/25); }
 function digits(number) { if (number ==0 ) {return 1} else {return (Math.floor(Math.log10(number))+1); }}
 function textplacing(radius, length, fontsize, direction) { 
     if (direction == 1)  return -radius-(length+fontsize /8)*direction
-    else if (direction == -1) return -radius-(length+fontsize/2)*direction
+    else if (direction == -1) return -radius-(length+fontsize)*direction
 }
 function degToRad(degrees) { return degrees * (Math.PI/180); }
 function radToDeg(radian) {return radian*180 /Math.PI; }
@@ -24,6 +24,11 @@ function drawTicks(context, radius, fontsize, offset, kind) {
     for(var angle = 0; angle < 360; angle+=10) {
         var length = fontsize/4;
         var inscription = -1;
+        if (angle % 90 == 0) {
+            context.font = Math.floor(fontsize*1.2).toString() +'px '+this.fontFamily;
+        } else {
+            context.font = (fontsize).toString() +'px '+this.fontFamily;
+        }
         if (angle % 30 == 0) {
             length=length*2;
         }
@@ -34,7 +39,7 @@ function drawTicks(context, radius, fontsize, offset, kind) {
             inscription = 360-angle
         }
         if ((inscription > 0) || (inscription == 0 && kind =="boat")) {
-             context.fillText(inscription.toString(),((-fontsize/6)*digits(inscription)),textplacing(radius, length, fontsize, offset));
+             context.fillText(inscription.toString(),((-fontsize/4)*digits(inscription)),textplacing(radius, length, fontsize, offset));
         }
         context.moveTo(0,-radius);
         context.lineTo(0,-radius-(length)*offset);
@@ -56,17 +61,18 @@ function drawNorthSouth(context, radius, fontsize, offset) {
         if (angle == 270) {
             inscription = "W"
         }
-        context.fillText(inscription,(-fontsize/6),textplacing(radius, length, fontsize, offset));
+        context.font =  (fontsize+4).toString() +'px '+this.fontFamily;
+        context.fillText(inscription,(-(fontsize+4)/3),textplacing(radius, length, fontsize, offset));
         context.stroke();
         context.rotate(Math.PI/2);
     }
 }
 
-function drawCircularScale(canvas, x, y, radius, offset, rotation, kind) {
+function drawCircularScale(canvas, x, y, radius, offset, rotationarg, kind) {
     let context = canvas.getContext("2d");
     context.strokestyle = "black";
     let fontsize = fontsizeForRadius(radius);
-    context.font =  (fontsize).toString +'px '+this.fontFamily;
+    context.font =  (fontsize).toString() +'px '+this.fontFamily;
     context.translate(x,y);
     if (kind == "boat") {
         context.rotate(-Math.PI/2);
@@ -100,11 +106,11 @@ function drawCircularScale(canvas, x, y, radius, offset, rotation, kind) {
         context.arc( 0 , 0 , radius, 0, 2 * Math.PI);
         context.stroke();
     }
-    //context.stroke();
     drawTicks(context, radius, fontsize, offset, kind);
     if (kind == "compass") {
         drawNorthSouth(context, radius, fontsize, offset *(-1))
     }
+    let rotation = rotationarg;
     console.log ("Rotation is " + rotation + " and kind is " +kind);
     context.rotate(rotation);
     context.translate(-x,-y);
@@ -117,7 +123,7 @@ function drawRose(innerAngle, outerAngle) {
     let compassroseCanvas = addOrResizeCanvas("rose", "compassrose", width, height);
 
     let radius=Math.min(width, height)/2;
-    drawCircularScale(compassroseCanvas, width/2,height/2, radius*0.8, -1, Math.PI, "compass");
+    drawCircularScale(compassroseCanvas, width/2,height/2, radius*0.8, -1, 1.2345, "compass");
     drawCircularScale(boatroseCanvas, width/2,height/2, radius*0.7, 1, innerAngle,"boat");
     let context = boatroseCanvas.getContext("2d");
     context.drawImage(compassroseCanvas, 0, 0, width, height);
