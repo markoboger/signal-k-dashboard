@@ -8,7 +8,7 @@
   grid-gap: 1px;
   grid-auto-columns: minmax(0, 12.5%);
   grid-auto-rows: minmax(0,1em);
-  background-color: rgb(250, 250, 250);
+  background-image: url('./public/img/map.png');
 }
 #rose {
   grid-column: 1 / 11;
@@ -34,7 +34,6 @@
 .textbox {
   font-size: 90%;
   color: black;
-  background-color: white;
 }
 
 #gauge1 { color:blue}
@@ -46,7 +45,6 @@
 #textbox3 { grid-column: 7/ span 2; grid-row: 35/ span 2;}
 .centerbox {
   font-size: 210%;
-  background-color: white;
   border: 3px solid darkblue;
   border-radius:8px;
 }
@@ -64,7 +62,6 @@
 
 .rimbox {
   font-size: 105%;
-  background-color: rgb(250, 250, 250);
   border: 2px solid darkblue;
   border-radius:8px;
 }
@@ -110,8 +107,7 @@
 
 #focusbox{
   font-size: 840%;
-  background-color: white;
-  border: 1px solid darkblue;
+    border: 1px solid darkblue;
   border-radius:8px;
   grid-column: 2 / 10;
   grid-row:9 / 29;

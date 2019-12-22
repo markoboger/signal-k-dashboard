@@ -56,7 +56,7 @@ function drawTicks(context, radius, fontsize, offset, kind) {
 function drawGauge(text, abbreviation, canvas,x,y,radius,fontsize, offset) {
     let context = canvas.getContext("2d");
     let bendstrength =fontsize*1.6;
-    let ticklength=8;
+    let ticklength=fontsize/2;
     let tipradius = radius+1;
     let baseradius = radius*1.2;
     let inscriptionradius = radius*1.125;
