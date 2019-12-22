@@ -70,6 +70,7 @@ function drawGauge(text, abbreviation, canvas,x,y,radius,fontsize, offset) {
         abbreviationradius = radius/1.116;
     }
     context.translate(x,y);
+    context.fillStyle="forestgreen";
     context.beginPath();
     context.moveTo(0, -tipradius);
     context.bezierCurveTo(bendstrength, -bendradius, bendstrength, -baseradius, 0, -baseradius);
@@ -104,8 +105,8 @@ function drawMarker(abbreviation,degree, canvas,x,y,radius, fontsize, offset) {
     context.rotate(degToRad(30));
     context.beginPath();
     context.lineWidth=1;
-    context.fillStyle="green";
-    context.arc( 0 , -radius, 16, 0, Math.PI*2);
+    context.fillStyle="orange";
+    context.arc( 0 , -radius, fontsize*1.4, 0, Math.PI*2);
     context.fill();
     context.stroke();
     context.fillStyle="black";
@@ -121,8 +122,10 @@ function drawForce(strength, canvas,x,y,radius) {
     context.translate(x,y);
     context.beginPath();
     context.lineWidth=10;
+    context.fillStyle="forestgreen";
     context.moveTo(0, -radius);
     context.lineTo(0, -(radius-(strength*10)));
+    context.fill();
     context.stroke();
     let r=20;
     let angle =Math.PI;
@@ -199,7 +202,7 @@ function drawCircularScale(canvas, x, y, radius, fontsize, offset, rotationarg, 
     if (kind == "compass") {
         drawNorthSouth(context, radius, fontsize, offset *(-1))
     }
-    let rotation = 2.222;
+    let rotation = 0.222;
     console.log ("Rotation is " + rotation + " and kind is " +kind);
     context.rotate(rotation);
     context.translate(-x,-y);
