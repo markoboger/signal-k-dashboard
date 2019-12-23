@@ -395,8 +395,7 @@ var viewModel = new Vue({
                 newOrientation = true;
                 checkOrientationChange();
             } ,
-            updateModel: function() {
-                
+            updateModel: function() {    
                 this.sog +=(Math.random()-0.5);
                 this.tws +=(Math.random()-0.5);
                 this.aws +=(Math.random()-0.5);
