@@ -161,7 +161,7 @@ function drawNorthSouth(context, radius, fontsize, offset) {
     }
 }
 
-function drawCircularScale(canvas, x, y, radius, fontsize, offset, rotationarg, kind) {
+function drawCircularScale(canvas, x, y, radius, fontsize, offset, kind) {
     let context = canvas.getContext("2d");
     context.strokestyle = "black";
     context.font =  (fontsize).toString() +'px '+this.fontFamily;
@@ -202,13 +202,12 @@ function drawCircularScale(canvas, x, y, radius, fontsize, offset, rotationarg, 
     if (kind == "compass") {
         drawNorthSouth(context, radius, fontsize, offset *(-1))
     }
-    let rotation = 0.222;
-    console.log ("Rotation is " + rotation + " and kind is " +kind);
+    let rotation = degToRad( viewModel.heading);
     context.rotate(rotation);
     context.translate(-x,-y);
 }
 
-function drawRose(innerAngle, outerAngle) {
+function drawRose() {
     let width =  $("#dashboard").width();
     let height =  $("#dashboard").height();
     
@@ -217,10 +216,10 @@ function drawRose(innerAngle, outerAngle) {
 
     let radius=Math.min(width, height)/2;
     let fontsize = fontsizeForRadius(radius*0.8);
-    drawCircularScale(compassroseCanvas, width/2,height/2, radius*0.8, fontsize, -1, 1.2345, "compass");
+    drawCircularScale(compassroseCanvas, width/2,height/2, radius*0.8, fontsize, -1, "compass");
     drawGauge('248','TWD',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1);
     drawGauge('237','TWA',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1);
-    drawCircularScale(boatroseCanvas, width/2,height/2, radius*0.7, fontsize, 1, innerAngle,"boat");
+    drawCircularScale(boatroseCanvas, width/2,height/2, radius*0.7, fontsize, 1,"boat");
     drawForce(10,compassroseCanvas,width/2,height/2,radius*0.60);
     drawMarker('WP','50', compassroseCanvas, width/2, height/2, radius*0.8, fontsize, 1);
     drawMarker('OT','250', boatroseCanvas, width/2, height/2, radius*0.7, fontsize, -1);
@@ -397,7 +396,7 @@ var viewModel = new Vue({
     methods:{
             initDashboard :function () {
                 console.log("got the toggle Message");
-                drawRose(0, hdg);
+                drawRose();
                 oldOrientation = true;
                 newOrientation = true;
                 checkOrientationChange();
@@ -409,7 +408,7 @@ var viewModel = new Vue({
                 this.stw +=(Math.random()-0.5);
                 this.vmg +=(Math.random()-0.5);
                 this.heading +=(Math.random()-0.5)*5;
-
+                drawRose();
             }   
     }
 })
