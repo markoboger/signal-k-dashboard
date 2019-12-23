@@ -261,10 +261,6 @@ function checkOrientationChange() {
     }
     oldOrientation=newOrientation;
 }
-/*
-import Vue from 'vue'
-import DrawerLayout from './node_modules/vue-drawer-layout'
-Vue.use(DrawerLayout);*/
 
 Vue.component('wind-rose', {
     template:`<div id="rose">
@@ -275,7 +271,7 @@ Vue.component('wind-rose', {
 Vue.component('rose-gauge', {
     props:['abbreviation', 'degree', 'color'],
     template:`<div id="gauge">
-          {{drawRoseGauge()}}  
+           
     </div>`,
     methods:{ 
         drawRoseGauge: function() {
@@ -291,6 +287,13 @@ Vue.component('rose-gauge', {
             drawGauge(degree,abbreviation,compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1);
         }
     }
+})
+
+Vue.component('two.two-digit-data', {
+    props: ['data'],
+    template:`<div>
+    {{(Math.floor(data*100)/100).toString()}} 
+    </div>`
 })
 
 Vue.component('rose-force', {
@@ -317,10 +320,8 @@ Vue.component('data-box', {
             <div class="data-box-aggregate">
                 {{aggregate}}
             </div>
-            <div class="data-box-icon">
-             
+            <div class="data-box-icon" @click="toggleFocus">
                     {{icon}} 
-              
             </div>
             <div class="data-box-content"> <slot></slot>
             </div>
@@ -332,16 +333,17 @@ Vue.component('data-box', {
             </div>
         </div>`,
         methods: {
-            handleClick() {
-              this.$emit('click');
-              console.log("got the handleClick");
+            toggleFocus: function() {
+              
+                document.getElementById("centerbox1").id="focusbox";
+                console.log("toggleFocus");
           }
         }
     
     })
 
 
-new Vue({
+var viewModel = new Vue({
     el:"#dashboard",
     data:{
         lat:'50° 34,56',
@@ -352,17 +354,17 @@ new Vue({
         log:"12,345 nm",
         heading:'360',
         depth:'18,5',
-        stw:'12,34',
-        sog:'8,90',
+        stw:12.34,
+        sog:8.90,
         cog:'10',
         hdg:'240',
-        aws:'15,89',
+        aws:15.89,
         awa: '345',
         awd: '335',
-        tws:'10,40',
+        tws:10.40,
         twa:'289',
         twd:'271',
-        vmg:'3,40',
+        vmg:3.40,
         target:'358',
         perf:'96,7',
         temp:'21,3',
@@ -386,18 +388,32 @@ new Vue({
         drag:'3'
     },
     methods:{
-            toggleMessage () {
-              console.log("got the toggle Message");
-          }
-        
+            initDashboard :function () {
+                console.log("got the toggle Message");
+                drawRose(0, hdg);
+                oldOrientation = true;
+                newOrientation = true;
+                checkOrientationChange();
+            } ,
+            updateModel: function() {
+                
+                this.sog +=(Math.random()-0.5);
+                this.tws +=(Math.random()-0.5);
+                this.aws +=(Math.random()-0.5);
+                this.stw +=(Math.random()-0.5);
+                this.vmg +=(Math.random()-0.5);
+            }   
     }
 })
     
 $('document').ready(function(){
     window.addEventListener('orientationchange', doOnOrientationChange);
     window.addEventListener('resize', checkOrientationChange);
-    drawRose(0, hdg);
-    oldOrientation = true;
-    newOrientation = true;
-    checkOrientationChange();
+    viewModel.initDashboard();
+    window.setInterval(function(){
+        viewModel.updateModel();
+        console.log("updating data, this.sog is " +this.sog);
+      }, 1000);
+    
+    
 });
