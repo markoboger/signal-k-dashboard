@@ -296,6 +296,13 @@ Vue.component('two.two-digit-data', {
     </div>`
 })
 
+Vue.component('three-digit-data', {
+    props: ['data'],
+    template:`<div>
+    {{Math.floor(data).toString()}} 
+    </div>`
+})
+
 Vue.component('rose-force', {
     props:['abbreviation','strength', 'degree', 'color'],
     template:`<div id="force">
@@ -352,7 +359,7 @@ var viewModel = new Vue({
         countdown:"00:45:20",
         rpm:"2700 RPM",
         log:"12,345 nm",
-        heading:'360',
+        heading:165,
         depth:'18,5',
         stw:12.34,
         sog:8.90,
@@ -365,7 +372,7 @@ var viewModel = new Vue({
         twa:'289',
         twd:'271',
         vmg:3.40,
-        target:'358',
+        target:'6,20',
         perf:'96,7',
         temp:'21,3',
         water_temp:'19,0',
@@ -401,6 +408,8 @@ var viewModel = new Vue({
                 this.aws +=(Math.random()-0.5);
                 this.stw +=(Math.random()-0.5);
                 this.vmg +=(Math.random()-0.5);
+                this.heading +=(Math.random()-0.5)*5;
+
             }   
     }
 })

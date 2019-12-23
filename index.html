@@ -30,7 +30,7 @@
             <data-box class="textbox"   id=textbox2 color="black">{{time}} <br> {{countdown}}</data-box>
             <data-box class="textbox"   id=textbox3 color="black">{{rpm}} <br> {{log}}</data-box>
 
-            <data-box class="topbox"    description="Heading" color="darkblue">{{heading}}</data-box>
+            <data-box class="topbox"    description="Heading" color="darkblue"><three-digit-data :data=heading></three-digit-data></data-box>
             <data-box class="bottombox" description="Depth" unit="m" color="red">{{depth}}</data-box>
 
             <data-box class="centerbox" id="centerbox1" abbreviation="STW"                 icon="@" description="Speed thru Water" unit="kn" color="darkblue"><two.two-digit-data :data=stw></two.two-digit-data></data-box>
