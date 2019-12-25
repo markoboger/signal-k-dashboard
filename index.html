@@ -6,6 +6,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     </head>
     <body>
+        <div id="background">
         <div id="dashboard" class="grid-container">
             <wind-rose>
                 <rose-gauge class="gauge outerRose" id="gauge1" abbreviation="TWD" :degree=  "twd" color="darkgreen">  </rose-gauge>
@@ -64,6 +65,7 @@
             <data-box class="rimbox"    id="rimbox4-4-landscape"  abbreviation="VMG" aggregate="Max" icon="@" description="App. Wind Speed"  unit="kn" color="ForestGreen"><two.two-digit-data :data=aws_max></two.two-digit-data></data-box>
         
         </div>
+    </div>
        
         <script src="./dashboard.js"></script>
         <script type="text/javascript+module" src="./src/registerServiceWorker.js"></script>
