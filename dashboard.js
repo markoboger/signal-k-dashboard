@@ -242,6 +242,10 @@ function drawRose() {
     drawGauge(viewModel.awa,'AWA',boatroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1, "boat");
     drawForce(viewModel.awd, viewModel.aws,compassroseCanvas,width/2,height/2,radius*0.60);
 
+    drawGauge(viewModel.cog,'COG',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "north");
+    drawGauge(viewModel.drag,'DRG',boatroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1, "boat");
+    //drawForce(viewModel.sog, viewModel.cog,compassroseCanvas,width/2,height/2,radius*0.60);
+
     drawCircularScale(boatroseCanvas, width/2,height/2, radius*0.7, fontsize, 1,"boat");
    
     drawMarker('WP',viewModel.wp, compassroseCanvas, width/2, height/2, radius*0.8, fontsize, 1, "north");
@@ -369,7 +373,7 @@ var viewModel = new Vue({
         depth:18.5,
         stw:12.34,
         sog:8.90,
-        cog:10,
+        cog:160,
         aws:15.89,
         awa: 240-165,
         awd: 240,
@@ -397,7 +401,7 @@ var viewModel = new Vue({
         vmg_max:3.65,
         ot:90,
         wp:355,
-        drag:3,
+        drag:-5,
     },
     methods:{
             initDashboard :function () {
@@ -418,6 +422,7 @@ var viewModel = new Vue({
                 this.vmg +=(Math.random()-0.5);
                 this.depth +=(Math.random()-0.5);
                 this.heading +=(Math.random()-0.5)*5;
+                this.cog = Math.round(this.heading + this.drag);
                 drawRose();
             }   
     }
