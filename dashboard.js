@@ -102,7 +102,7 @@ function drawMarker(abbreviation,degree, canvas,x,y,radius, fontsize, offset) {
     }
     let context = canvas.getContext("2d");
     context.translate(x,y);
-    context.rotate(degToRad(30));
+    context.rotate(degToRad(degree));
     context.beginPath();
     context.lineWidth=1;
     context.fillStyle="orange";
@@ -131,9 +131,9 @@ function drawForce(strength, canvas,x,y,radius) {
     let angle =Math.PI;
     for (i=0; i==2; i++) {
         angle += (1/3)*(2*Math.PI);
-        context.lineTo(0 + r*Math.cos(angle),-(radius-(strength*10)) - r*Math.sin(angle));
+        context.lineTo(0 + r*Math.cos(angle),-(radius-(strength*5)) - r*Math.sin(angle));
     }
-    context.lineTo(0, -(radius-(strength*10)));
+    context.lineTo(0, -(radius-(strength*5)));
     //context.closePath();
     //context.fill();
     context.stroke;
@@ -217,12 +217,12 @@ function drawRose() {
     let radius=Math.min(width, height)/2;
     let fontsize = fontsizeForRadius(radius*0.8);
     drawCircularScale(compassroseCanvas, width/2,height/2, radius*0.8, fontsize, -1, "compass");
-    drawGauge('248','TWD',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1);
-    drawGauge('237','TWA',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1);
+    drawGauge(viewModel.twd,'TWD',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1);
+    drawGauge(viewModel.twa,'TWA',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1);
     drawCircularScale(boatroseCanvas, width/2,height/2, radius*0.7, fontsize, 1,"boat");
-    drawForce(10,compassroseCanvas,width/2,height/2,radius*0.60);
-    drawMarker('WP','50', compassroseCanvas, width/2, height/2, radius*0.8, fontsize, 1);
-    drawMarker('OT','250', boatroseCanvas, width/2, height/2, radius*0.7, fontsize, -1);
+    drawForce(viewModel.stw,compassroseCanvas,width/2,height/2,radius*0.60);
+    drawMarker('WP',viewModel.wp, compassroseCanvas, width/2, height/2, radius*0.8, fontsize, 1);
+    drawMarker('OT',viewModel.ot, boatroseCanvas, width/2, height/2, radius*0.7, fontsize, -1);
     let context = boatroseCanvas.getContext("2d");
     context.drawImage(compassroseCanvas, 0, 0, width, height);
 }
@@ -406,6 +406,7 @@ var viewModel = new Vue({
                 this.aws +=(Math.random()-0.5);
                 this.stw +=(Math.random()-0.5);
                 this.vmg +=(Math.random()-0.5);
+                this.depth +=(Math.random()-0.5);
                 this.heading +=(Math.random()-0.5)*5;
                 drawRose();
             }   
