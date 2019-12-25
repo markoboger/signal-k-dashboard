@@ -26,6 +26,7 @@ function degToRad(degrees) { return degrees * (Math.PI/180); }
 function radToDeg(radian) {return radian*180 /Math.PI; }
 
 function drawTicks(context, radius, fontsize, offset, kind) {
+    context.save();
     for(var angle = 0; angle < 360; angle+=10) {
         var length = fontsize/4;
         var inscription = -1;
@@ -51,9 +52,10 @@ function drawTicks(context, radius, fontsize, offset, kind) {
         context.stroke();
         context.rotate(Math.PI/18);
     }
+    context.restore();
 }
 
-function drawGauge(text, abbreviation, canvas,x,y,radius,fontsize, offset) {
+function drawGauge(degree, abbreviation, canvas,x,y,radius,fontsize, offset, relativeTo) {
     let context = canvas.getContext("2d");
     let bendstrength =fontsize*1.6;
     let ticklength=fontsize/2;
@@ -69,7 +71,12 @@ function drawGauge(text, abbreviation, canvas,x,y,radius,fontsize, offset) {
         bendradius = radius/1.125;
         abbreviationradius = radius/1.116;
     }
+    context.save();
     context.translate(x,y);
+    context.rotate(degToRad(degree));
+    if (relativeTo == "north") {
+        context.rotate(degToRad(viewModel.heading));
+    }
     context.fillStyle="forestgreen";
     context.beginPath();
     context.moveTo(0, -tipradius);
@@ -83,14 +90,15 @@ function drawGauge(text, abbreviation, canvas,x,y,radius,fontsize, offset) {
     context.lineTo(0, -(tipradius + ticklength*offset));
     context.stroke();
     context.font =  (fontsize).toString() +'px Arial';
-    context.fillText(text,-halfLengthOfText(text,fontsize),-inscriptionradius);
+    context.fillText(degree,-halfLengthOfNumber(degree,fontsize),-inscriptionradius);
     fontsize=Math.ceil(fontsize/2);
     context.font =  (fontsize).toString() +'px Arial';
     context.fillText(abbreviation,-halfLengthOfText(abbreviation,fontsize),-abbreviationradius);
-    context.translate(-x,-y);
+    
+    context.restore();
 }
 
-function drawMarker(abbreviation,degree, canvas,x,y,radius, fontsize, offset) {
+function drawMarker(abbreviation,degree, canvas,x,y,radius, fontsize, offset, relativeTo) {
     let shiftin =0;
     let shiftout=0;
     if (offset == 1) {
@@ -101,8 +109,12 @@ function drawMarker(abbreviation,degree, canvas,x,y,radius, fontsize, offset) {
         shiftout= -fontsize;
     }
     let context = canvas.getContext("2d");
+    context.save();
     context.translate(x,y);
     context.rotate(degToRad(degree));
+    if (relativeTo=="north") {
+        context.rotate(degToRad(viewModel.heading));
+    }
     context.beginPath();
     context.lineWidth=1;
     context.fillStyle="orange";
@@ -113,18 +125,21 @@ function drawMarker(abbreviation,degree, canvas,x,y,radius, fontsize, offset) {
     context.font =  (fontsize).toString() +'px Arial';
     context.fillText(abbreviation,-halfLengthOfText(abbreviation,fontsize),-(radius + shiftout));
     context.fillText(degree,-halfLengthOfNumber(degree,fontsize),-(radius + shiftin));
-
-    context.translate(-x,-y);
+    context.restore();
+    
 }
 
-function drawForce(strength, canvas,x,y,radius) {
+function drawForce(degree, strength, canvas,x,y,radius) {
     let context = canvas.getContext("2d");
+    context.save();
     context.translate(x,y);
+    context.rotate(degToRad(degree));
+    context.rotate(degToRad(viewModel.heading));
     context.beginPath();
     context.lineWidth=10;
     context.fillStyle="forestgreen";
     context.moveTo(0, -radius);
-    context.lineTo(0, -(radius-(strength*10)));
+    context.lineTo(0, -(radius-(strength*5)));
     context.fill();
     context.stroke();
     let r=20;
@@ -137,11 +152,12 @@ function drawForce(strength, canvas,x,y,radius) {
     //context.closePath();
     //context.fill();
     context.stroke;
-    context.translate(-x,-y);
+    context.restore();
 }
 
 
 function drawNorthSouth(context, radius, fontsize, offset) {
+    context.save();
     for(var angle = 0; angle < 360; angle+=90) {
         var length = fontsize/4;
         var inscription = 'N';
@@ -159,6 +175,7 @@ function drawNorthSouth(context, radius, fontsize, offset) {
         context.stroke();
         context.rotate(Math.PI/2);
     }
+    context.restore();
 }
 
 function drawCircularScale(canvas, x, y, radius, fontsize, offset, kind) {
@@ -202,7 +219,7 @@ function drawCircularScale(canvas, x, y, radius, fontsize, offset, kind) {
     if (kind == "compass") {
         drawNorthSouth(context, radius, fontsize, offset *(-1))
     }
-    let rotation = degToRad( viewModel.heading);
+    let rotation = degToRad( -viewModel.heading);
     context.rotate(rotation);
     context.translate(-x,-y);
 }
@@ -217,12 +234,18 @@ function drawRose() {
     let radius=Math.min(width, height)/2;
     let fontsize = fontsizeForRadius(radius*0.8);
     drawCircularScale(compassroseCanvas, width/2,height/2, radius*0.8, fontsize, -1, "compass");
-    drawGauge(viewModel.twd,'TWD',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1);
-    drawGauge(viewModel.twa,'TWA',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1);
+    drawGauge(viewModel.twd,'TWD',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "north");
+    drawGauge(viewModel.twa,'TWA',boatroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1), "boat";
+    drawForce(viewModel.twd, viewModel.tws,compassroseCanvas,width/2,height/2,radius*0.60);
+
+    drawGauge(viewModel.awd,'AWD',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "north");
+    drawGauge(viewModel.awa,'AWA',boatroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1, "boat");
+    drawForce(viewModel.awd, viewModel.aws,compassroseCanvas,width/2,height/2,radius*0.60);
+
     drawCircularScale(boatroseCanvas, width/2,height/2, radius*0.7, fontsize, 1,"boat");
-    drawForce(viewModel.stw,compassroseCanvas,width/2,height/2,radius*0.60);
-    drawMarker('WP',viewModel.wp, compassroseCanvas, width/2, height/2, radius*0.8, fontsize, 1);
-    drawMarker('OT',viewModel.ot, boatroseCanvas, width/2, height/2, radius*0.7, fontsize, -1);
+   
+    drawMarker('WP',viewModel.wp, compassroseCanvas, width/2, height/2, radius*0.8, fontsize, 1, "north");
+    drawMarker('OT',viewModel.ot, boatroseCanvas, width/2, height/2, radius*0.7, fontsize, -1, "boat");
     let context = boatroseCanvas.getContext("2d");
     context.drawImage(compassroseCanvas, 0, 0, width, height);
 }
@@ -246,7 +269,7 @@ function doOnOrientationChange() {
     } else {
         swapoutIdSubstring(document.querySelectorAll("[id*=landscape]"),"landscape","portrait");
     }
-    drawRose(0,hdg);
+    drawRose();
 }
 
 let oldOrientation = true;
@@ -271,21 +294,7 @@ Vue.component('rose-gauge', {
     props:['abbreviation', 'degree', 'color'],
     template:`<div id="gauge">
            
-    </div>`,
-    methods:{ 
-        drawRoseGauge: function() {
-            console.log("DrawRoseGauge is called");
-            let width =  $("#dashboard").width();
-            let height =  $("#dashboard").height();
-            
-            let boatroseCanvas = addOrResizeCanvas("rose", "boatrose", width, height);
-            let compassroseCanvas = addOrResizeCanvas("rose", "compassrose", width, height);
-
-            let radius=Math.min(width, height)/2;
-            let fontsize = fontsizeForRadius(radius*0.8);
-            drawGauge(degree,abbreviation,compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1);
-        }
-    }
+    </div>`
 })
 
 Vue.component('two.two-digit-data', {
@@ -340,9 +349,7 @@ Vue.component('data-box', {
         </div>`,
         methods: {
             toggleFocus: function() {
-              
                 document.getElementById("centerbox1").id="focusbox";
-                console.log("toggleFocus");
           }
         }
     
@@ -362,13 +369,13 @@ var viewModel = new Vue({
         depth:18.5,
         stw:12.34,
         sog:8.90,
-        cog:'10',
+        cog:10,
         aws:15.89,
-        awa: '345',
-        awd: '335',
+        awa: 240-165,
+        awd: 240,
         tws:10.40,
-        twa:'289',
-        twd:'271',
+        twa:270-165,
+        twd:270,
         vmg:3.40,
         target:6.20,
         perf:96.7,
@@ -388,13 +395,12 @@ var viewModel = new Vue({
         aws_max:10.99,
         vmg_avg:3.78,
         vmg_max:3.65,
-        ot:'90',
-        wp:'355',
-        drag:'3'
+        ot:90,
+        wp:355,
+        drag:3,
     },
     methods:{
             initDashboard :function () {
-                console.log("got the toggle Message");
                 drawRose();
                 oldOrientation = true;
                 newOrientation = true;
@@ -403,6 +409,10 @@ var viewModel = new Vue({
             updateModel: function() {    
                 this.sog +=(Math.random()-0.5);
                 this.tws +=(Math.random()-0.5);
+                this.twd +=Math.round((Math.random()-0.5));
+                this.twa = Math.round(this.twd-this.heading);
+                this.awd +=Math.round((Math.random()-0.5));
+                this.awa = Math.round(this.awd-this.heading);
                 this.aws +=(Math.random()-0.5);
                 this.stw +=(Math.random()-0.5);
                 this.vmg +=(Math.random()-0.5);
@@ -419,7 +429,6 @@ $('document').ready(function(){
     viewModel.initDashboard();
     window.setInterval(function(){
         viewModel.updateModel();
-        console.log("updating data, this.sog is " +this.sog);
       }, 1000);
     
     
