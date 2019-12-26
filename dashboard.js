@@ -129,12 +129,15 @@ function drawMarker(abbreviation,degree, canvas,x,y,radius, fontsize, offset, re
     
 }
 
-function drawForce(degree, strength, canvas,x,y,radius) {
+function drawForce(degree, strength, canvas,x,y,radius, relativeTo) {
     let context = canvas.getContext("2d");
     context.save();
     context.translate(x,y);
     context.rotate(degToRad(degree));
-    context.rotate(degToRad(viewModel.heading));
+    if (relativeTo =="north") {
+       
+        context.rotate(degToRad(viewModel.heading));
+    }
     context.beginPath();
     context.lineWidth=10;
     context.fillStyle="forestgreen";
@@ -142,13 +145,13 @@ function drawForce(degree, strength, canvas,x,y,radius) {
     context.lineTo(0, -(radius-(strength*5)));
     context.fill();
     context.stroke();
-    let r=20;
-    let angle =Math.PI;
-    for (i=0; i==2; i++) {
-        angle += (1/3)*(2*Math.PI);
-        context.lineTo(0 + r*Math.cos(angle),-(radius-(strength*5)) - r*Math.sin(angle));
-    }
-    context.lineTo(0, -(radius-(strength*5)));
+    // let r=20;
+    // let angle =Math.PI;
+    // for (i=0; i==2; i++) {
+    //     angle += (1/3)*(2*Math.PI);
+    //     context.lineTo(0 + r*Math.cos(angle),-(radius-(strength*5)) - r*Math.sin(angle));
+    // }
+    // context.lineTo(0, -(radius-(strength*5)));
     //context.closePath();
     //context.fill();
     context.stroke;
@@ -236,15 +239,17 @@ function drawRose() {
     drawCircularScale(compassroseCanvas, width/2,height/2, radius*0.8, fontsize, -1, "compass");
     drawGauge(viewModel.twd,'TWD',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "north");
     drawGauge(viewModel.twa,'TWA',boatroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1), "boat";
-    drawForce(viewModel.twd, viewModel.tws,compassroseCanvas,width/2,height/2,radius*0.60);
+    drawForce(viewModel.twd, viewModel.tws,compassroseCanvas,width/2,height/2,radius*0.60, "north");
 
     drawGauge(viewModel.awd,'AWD',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "north");
     drawGauge(viewModel.awa,'AWA',boatroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1, "boat");
-    drawForce(viewModel.awd, viewModel.aws,compassroseCanvas,width/2,height/2,radius*0.60);
+    drawForce(viewModel.awd, viewModel.aws,compassroseCanvas,width/2,height/2,radius*0.60, "north");
 
     drawGauge(viewModel.cog,'COG',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "north");
     drawGauge(viewModel.drag,'DRG',boatroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1, "boat");
-    //drawForce(viewModel.sog, viewModel.cog,compassroseCanvas,width/2,height/2,radius*0.60);
+    drawForce(viewModel.cog+viewModel.heading, viewModel.sog,compassroseCanvas,width/2,height/2,radius*0.60, "boat");
+    drawForce(0, viewModel.stw,boatroseCanvas,width/2,height/2,radius*0.60, "boats");
+
 
     drawCircularScale(boatroseCanvas, width/2,height/2, radius*0.7, fontsize, 1,"boat");
    
