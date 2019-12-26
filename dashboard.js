@@ -345,7 +345,7 @@ function drawRose() {
     drawForce(0, viewModel.stw,"darkblue",boatroseCanvas,width/2,height/2,radius*0.60, 1, "boats");
 
     drawHistoryTail(viewModel.heading,'HDG',"darkblue", compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "boat");
-    drawHistoryTail(viewModel.twa+180,'TWA',"darkgreen", compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "boat");
+    drawHistoryTail(viewModel.twd,'TWA',"darkgreen", compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "boat");
 
     drawCircularScale(boatroseCanvas, width/2,height/2, radius*0.7, fontsize, 1,"boat");
    
@@ -469,7 +469,7 @@ var viewModel = new Vue({
         countdown:"00:45:20",
         rpm:"Engine 2,700 rpm",
         log:"Log 12,345 nm",
-        heading:165,
+        heading:5,
         depth:18.5,
         stw:12.34,
         sog:8.90,
