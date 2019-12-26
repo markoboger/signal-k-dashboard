@@ -129,31 +129,52 @@ function drawMarker(abbreviation,degree, canvas,x,y,radius, fontsize, offset, re
     
 }
 
-function drawForce(degree, strength, canvas,x,y,radius, relativeTo) {
+function drawForce(degree, strength, color, canvas,x,y,radius, offset,  relativeTo) {
     let context = canvas.getContext("2d");
     context.save();
     context.translate(x,y);
     context.rotate(degToRad(degree));
+    let r=20;
+    let x1= 0;
+    let y1=0;
     if (relativeTo =="north") {
-       
         context.rotate(degToRad(viewModel.heading));
     }
     context.beginPath();
     context.lineWidth=10;
-    context.fillStyle="forestgreen";
-    context.moveTo(0, -radius);
-    context.lineTo(0, -(radius-(strength*5)));
+    context.fillStyle=color;
+    context.strokeStyle =color;
+    y1=-radius;
+    if (offset == 1) {y1 = y1 + r}
+    context.moveTo(0, y1);
+    y1=-(radius-(strength*5));
+    if (offset == 1) {y1 = y1 + r}
+    context.lineTo(0, y1);
     context.fill();
     context.stroke();
-    // let r=20;
-    // let angle =Math.PI;
-    // for (i=0; i==2; i++) {
-    //     angle += (1/3)*(2*Math.PI);
-    //     context.lineTo(0 + r*Math.cos(angle),-(radius-(strength*5)) - r*Math.sin(angle));
-    // }
-    // context.lineTo(0, -(radius-(strength*5)));
-    //context.closePath();
-    //context.fill();
+    let angle =degToRad(210);
+    if (offset ==-1) {
+        angle =degToRad(30);
+    }
+
+    y1 = -radius;
+    if (offset ==-1) {y1=-(radius-(strength*5))}
+    if (offset == 1) {y1 = y1 + r}
+    context.moveTo(0, y1);
+    for (i=0; i<=2; i++) {
+        angle += (1/3)*(2*Math.PI);
+        x1=0 + r*Math.cos(angle);
+        y1 = -radius - r*Math.sin(angle);
+        if (offset ==-1) {y1=-(radius-(strength*5)) - r*Math.sin(angle)}
+        if (offset == 1) {y1 = y1 + r}
+        context.lineTo(x1,y1);
+    }
+    y1 = -radius;
+    if (offset ==-1) {y1=-(radius-(strength*5))}
+    if (offset == 1) {y1 = y1 + r}
+    context.lineTo(0, y1);
+    context.closePath();
+    context.fill();
     context.stroke;
     context.restore();
 }
@@ -239,16 +260,16 @@ function drawRose() {
     drawCircularScale(compassroseCanvas, width/2,height/2, radius*0.8, fontsize, -1, "compass");
     drawGauge(viewModel.twd,'TWD',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "north");
     drawGauge(viewModel.twa,'TWA',boatroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1), "boat";
-    drawForce(viewModel.twd, viewModel.tws,compassroseCanvas,width/2,height/2,radius*0.60, "north");
+    drawForce(viewModel.twd, viewModel.tws,"darkgreen",compassroseCanvas,width/2,height/2,radius*0.60, -1,"north");
 
     drawGauge(viewModel.awd,'AWD',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "north");
     drawGauge(viewModel.awa,'AWA',boatroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1, "boat");
-    drawForce(viewModel.awd, viewModel.aws,compassroseCanvas,width/2,height/2,radius*0.60, "north");
+    drawForce(viewModel.awd, viewModel.aws,"forestgreen",compassroseCanvas,width/2,height/2,radius*0.60, -1, "north");
 
     drawGauge(viewModel.cog,'COG',compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "north");
     drawGauge(viewModel.drag,'DRG',boatroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1, "boat");
-    drawForce(viewModel.cog+viewModel.heading, viewModel.sog,compassroseCanvas,width/2,height/2,radius*0.60, "boat");
-    drawForce(0, viewModel.stw,boatroseCanvas,width/2,height/2,radius*0.60, "boats");
+    drawForce(viewModel.cog+viewModel.heading, viewModel.sog,"royalblue",compassroseCanvas,width/2,height/2,radius*0.60, 1, "boat");
+    drawForce(0, viewModel.stw,"darkblue",boatroseCanvas,width/2,height/2,radius*0.60, 1, "boats");
 
 
     drawCircularScale(boatroseCanvas, width/2,height/2, radius*0.7, fontsize, 1,"boat");
