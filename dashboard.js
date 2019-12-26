@@ -55,7 +55,7 @@ function drawTicks(context, radius, fontsize, offset, kind) {
     context.restore();
 }
 
-let historySet = {COG:[], TWD:[], AWA:[], HDG: []};
+let historySet = {COG:[], TWD:[], AWA:[], HDG: [], TWA:[]};
 
 function drawGaugeHistory(degree, abbreviation, color, canvas,x,y,radius,fontsize, offset, relativeTo) {
     let context = canvas.getContext("2d");
@@ -93,7 +93,7 @@ function drawGaugeHistory(degree, abbreviation, color, canvas,x,y,radius,fontsiz
     }
 }
 
-function drawHeadingHistory(degree, abbreviation, color, canvas1,x,y,radius,fontsize, offset, relativeTo){
+function drawHistoryTail(degree, abbreviation, color, canvas1,x,y,radius,fontsize, offset, relativeTo){
     let context = canvas1.getContext("2d");
     if (!Object.keys(historySet).includes(abbreviation) ) {historySet.push({abbreviation: new Array()})}
     let history = historySet[abbreviation];
@@ -344,7 +344,8 @@ function drawRose() {
  
     drawForce(0, viewModel.stw,"darkblue",boatroseCanvas,width/2,height/2,radius*0.60, 1, "boats");
 
-    drawHeadingHistory(viewModel.heading,'HDG',"darkblue", compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "boat");
+    drawHistoryTail(viewModel.heading,'HDG',"darkblue", compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "boat");
+    drawHistoryTail(viewModel.twa+180,'TWA',"darkgreen", compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "boat");
 
     drawCircularScale(boatroseCanvas, width/2,height/2, radius*0.7, fontsize, 1,"boat");
    
