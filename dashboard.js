@@ -55,7 +55,7 @@ function drawTicks(context, radius, fontsize, offset, kind) {
     context.restore();
 }
 
-let historySet = {COG:new Array(), TWD:new Array()};
+let historySet = {COG:new Array(), TWD:new Array(), AWA:new Array()};
 function drawGaugeHistory(degree, abbreviation, color, canvas,x,y,radius,fontsize, offset, relativeTo) {
     let context = canvas.getContext("2d");
     if (!Object.keys(historySet).includes(abbreviation) ) {historySet.push({abbreviation: new Array()})}
@@ -245,7 +245,7 @@ function drawNorthSouth(context, radius, fontsize, offset) {
 
 function drawCircularScale(canvas, x, y, radius, fontsize, offset, kind) {
     let context = canvas.getContext("2d");
-    context.strokestyle = "black";
+    context.fillStyle = "black";
     context.font =  (fontsize).toString() +'px '+this.fontFamily;
     context.translate(x,y);
     if (kind == "boat") {
