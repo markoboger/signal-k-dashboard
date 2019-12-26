@@ -55,7 +55,8 @@ function drawTicks(context, radius, fontsize, offset, kind) {
     context.restore();
 }
 
-let historySet = {COG:new Array(), TWD:new Array(), AWA:new Array()};
+let historySet = {COG:[], TWD:[], AWA:[], HDG: []};
+
 function drawGaugeHistory(degree, abbreviation, color, canvas,x,y,radius,fontsize, offset, relativeTo) {
     let context = canvas.getContext("2d");
     if (!Object.keys(historySet).includes(abbreviation) ) {historySet.push({abbreviation: new Array()})}
@@ -90,8 +91,35 @@ function drawGaugeHistory(degree, abbreviation, color, canvas,x,y,radius,fontsiz
         context.restore();
         opacity -= 1/10;
     }
+}
 
-    
+function drawHeadingHistory(degree, abbreviation, color, canvas1,x,y,radius,fontsize, offset, relativeTo){
+    let context = canvas1.getContext("2d");
+    if (!Object.keys(historySet).includes(abbreviation) ) {historySet.push({abbreviation: new Array()})}
+    let history = historySet[abbreviation];
+    context.save();
+    context.translate(x,y);
+    context.fillStyle=color;
+    context.strokeStyle=color;
+    let pinheadSize = fontsize*0.3;
+    history.unshift({'degree':degree});
+    history=history.slice(0,30);
+    let opacity=1;
+    let y1=-pinheadSize*1.8;
+    let rotation =0;
+    for (var i = 0; i<history.length; i++) {
+        rotation = degToRad(history[i].degree+180+viewModel.heading);
+        context.rotate(rotation);
+        context.globalAlpha=opacity;
+        context.beginPath();
+        context.arc( 0 , y1, pinheadSize , 0, Math.PI*2);
+        context.stroke();
+        context.fill();
+        context.rotate(-rotation);
+        opacity -= 1/30;
+        y1 -=pinheadSize*1.8;
+    }
+    context.restore();
 }
 
 function drawGauge(degree, abbreviation, color, canvas,x,y,radius,fontsize, offset, relativeTo) {
@@ -316,10 +344,12 @@ function drawRose() {
  
     drawForce(0, viewModel.stw,"darkblue",boatroseCanvas,width/2,height/2,radius*0.60, 1, "boats");
 
+    drawHeadingHistory(viewModel.heading,'HDG',"darkblue", compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "boat");
+
     drawCircularScale(boatroseCanvas, width/2,height/2, radius*0.7, fontsize, 1,"boat");
    
     drawMarker('WP',viewModel.wp, compassroseCanvas, width/2, height/2, radius*0.8, fontsize, 1, "north");
-    drawMarker('OT',viewModel.ot, boatroseCanvas, width/2, height/2, radius*0.7, fontsize, -1, "boat");
+    drawMarker('OT',viewModel.ot, compassroseCanvas, width/2, height/2, radius*0.7, fontsize, -1, "boat");
     let context = boatroseCanvas.getContext("2d");
     context.drawImage(compassroseCanvas, 0, 0, width, height);
 }
@@ -490,7 +520,7 @@ var viewModel = new Vue({
                 this.stw +=(Math.random()-0.5);
                 this.vmg +=(Math.random()-0.5);
                 this.depth +=(Math.random()-0.5);
-                this.heading +=(Math.random()-0.5)*5;
+                this.heading +=Math.round((Math.random()-0.5)*5);
                 this.cog = Math.round(this.heading + this.drag);
                 drawRose();
             }   
