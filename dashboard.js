@@ -55,6 +55,45 @@ function drawTicks(context, radius, fontsize, offset, kind) {
     context.restore();
 }
 
+let historySet = {COG:new Array(), TWD:new Array(), AWA: new Array()};
+function drawGaugeHistory(degree, abbreviation, color, canvas,x,y,radius,fontsize, offset, relativeTo) {
+    let context = canvas.getContext("2d");
+    let history = historySet[abbreviation];
+    context.fillStyle=color;
+    context.strokeStyle=color;
+    let pinheadSize = fontsize*0.3;
+    history.unshift({'degree':degree});
+    history=history.slice(0,10);
+    let opacity=1;
+    let y1=-radius-pinheadSize*1.8;
+    let y2=-radius-pinheadSize*3.6;
+    if (offset == -1) {
+        y1=-radius+pinheadSize*1.8;
+        y2=-radius+pinheadSize*3.6;
+    }
+    for (var i = 0; i<history.length; i++) {
+        console.log(history[i]);
+        context.save();
+        context.translate(x,y);
+        context.rotate(degToRad(history[i].degree));
+        if (relativeTo == "north") {
+            context.rotate(degToRad(viewModel.heading));
+        }
+        context.globalAlpha=opacity;
+        context.beginPath();
+        context.arc( 0 , y1, pinheadSize , 0, Math.PI*2);
+        context.stroke();
+        context.fill();
+        context.moveTo(0,y1);
+        context.lineTo(0,y2);
+        context.stroke();
+        context.restore();
+        opacity -= 1/10;
+    }
+
+    
+}
+
 function drawGauge(degree, abbreviation, color, canvas,x,y,radius,fontsize, offset, relativeTo) {
     let context = canvas.getContext("2d");
     let bendstrength =fontsize*1.6;
@@ -261,14 +300,17 @@ function drawRose() {
     let fontsize = fontsizeForRadius(radius*0.8);
     drawCircularScale(compassroseCanvas, width/2,height/2, radius*0.8, fontsize, -1, "compass");
     drawGauge(viewModel.twd,'TWD',"darkgreen", compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "north");
+    drawGaugeHistory(viewModel.twd,'TWD',"darkgreen", compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "north");
     drawGauge(viewModel.twa,'TWA',"darkgreen", boatroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1), "boat";
     drawForce(viewModel.twd, viewModel.tws,"darkgreen",compassroseCanvas,width/2,height/2,radius*0.60, -1,"north");
 
     drawGauge(viewModel.awd,'AWD',"forestgreen",compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "north");
     drawGauge(viewModel.awa,'AWA',"forestgreen",boatroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1, "boat");
+    drawGaugeHistory(viewModel.awa,'AWA',"forestgreen", boatroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1, "north");
     drawForce(viewModel.awd, viewModel.aws,"forestgreen",compassroseCanvas,width/2,height/2,radius*0.60, -1, "north");
 
     drawGauge(viewModel.cog,'COG',"royalblue",compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "north");
+    drawGaugeHistory(viewModel.cog,'COG',"royalblue", compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "north");
     drawGauge(viewModel.drag,'DRG',"royalblue",boatroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1, "boat");
     drawForce(viewModel.cog+viewModel.heading, viewModel.sog,"royalblue",compassroseCanvas,width/2,height/2,radius*0.60, 1, "boat");
  
@@ -406,7 +448,7 @@ var viewModel = new Vue({
         awd: 240,
         tws:10.40,
         twa:270-165,
-        twd:270,
+        twd:275,
         vmg:3.40,
         target:6.20,
         perf:96.7,
@@ -440,7 +482,7 @@ var viewModel = new Vue({
             updateModel: function() {    
                 this.sog +=(Math.random()-0.5);
                 this.tws +=(Math.random()-0.5);
-                this.twd +=Math.round((Math.random()-0.5));
+                this.twd +=Math.round((Math.random()-0.5)*5);
                 this.twa = Math.round(this.twd-this.heading);
                 this.awd +=Math.round((Math.random()-0.5));
                 this.awa = Math.round(this.awd-this.heading);
