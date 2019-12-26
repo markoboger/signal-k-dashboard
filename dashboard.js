@@ -55,9 +55,10 @@ function drawTicks(context, radius, fontsize, offset, kind) {
     context.restore();
 }
 
-let historySet = {COG:new Array(), TWD:new Array(), AWA: new Array()};
+let historySet = {COG:new Array(), TWD:new Array()};
 function drawGaugeHistory(degree, abbreviation, color, canvas,x,y,radius,fontsize, offset, relativeTo) {
     let context = canvas.getContext("2d");
+    if (!Object.keys(historySet).includes(abbreviation) ) {historySet.push({abbreviation: new Array()})}
     let history = historySet[abbreviation];
     context.fillStyle=color;
     context.strokeStyle=color;
@@ -72,7 +73,6 @@ function drawGaugeHistory(degree, abbreviation, color, canvas,x,y,radius,fontsiz
         y2=-radius+pinheadSize*3.6;
     }
     for (var i = 0; i<history.length; i++) {
-        console.log(history[i]);
         context.save();
         context.translate(x,y);
         context.rotate(degToRad(history[i].degree));
