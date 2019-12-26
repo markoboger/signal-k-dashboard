@@ -141,6 +141,7 @@ function drawForce(degree, strength, color, canvas,x,y,radius, offset,  relative
     if (relativeTo =="north") {
         context.rotate(degToRad(viewModel.heading));
     }
+    let length=Math.log2(strength)*15;
     context.beginPath();
     context.lineWidth=10;
     context.fillStyle=color;
@@ -148,7 +149,7 @@ function drawForce(degree, strength, color, canvas,x,y,radius, offset,  relative
     y1=-radius;
     if (offset == 1) {y1 = y1 + r}
     context.moveTo(0, y1);
-    y1=-(radius-(strength*5));
+    y1=-(radius-(length));
     if (offset == 1) {y1 = y1 + r}
     context.lineTo(0, y1);
     context.fill();
@@ -159,19 +160,19 @@ function drawForce(degree, strength, color, canvas,x,y,radius, offset,  relative
     }
 
     y1 = -radius;
-    if (offset ==-1) {y1=-(radius-(strength*5))}
+    if (offset ==-1) {y1=-(radius-(length))}
     if (offset == 1) {y1 = y1 + r}
     context.moveTo(0, y1);
     for (i=0; i<=2; i++) {
         angle += (1/3)*(2*Math.PI);
         x1=0 + r*Math.cos(angle);
         y1 = -radius - r*Math.sin(angle);
-        if (offset ==-1) {y1=-(radius-(strength*5)) - r*Math.sin(angle)}
+        if (offset ==-1) {y1=-(radius-(length)) - r*Math.sin(angle)}
         if (offset == 1) {y1 = y1 + r}
         context.lineTo(x1,y1);
     }
     y1 = -radius;
-    if (offset ==-1) {y1=-(radius-(strength*5))}
+    if (offset ==-1) {y1=-(radius-(length))}
     if (offset == 1) {y1 = y1 + r}
     context.lineTo(0, y1);
     context.closePath();
@@ -323,8 +324,7 @@ Vue.component('wind-rose', {
 
 Vue.component('rose-gauge', {
     props:['abbreviation', 'degree', 'color'],
-    template:`<div id="gauge">
-           
+    template:`<div id="gauge"> 
     </div>`
 })
 
