@@ -306,7 +306,7 @@ function drawRose() {
 
     drawGauge(viewModel.awd,'AWD',"forestgreen",compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "north");
     drawGauge(viewModel.awa,'AWA',"forestgreen",boatroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1, "boat");
-    drawGaugeHistory(viewModel.awa,'AWA',"forestgreen", boatroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1, "north");
+    drawGaugeHistory(viewModel.awa,'AWA',"forestgreen", boatroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),-1, "boat");
     drawForce(viewModel.awd, viewModel.aws,"forestgreen",compassroseCanvas,width/2,height/2,radius*0.60, -1, "north");
 
     drawGauge(viewModel.cog,'COG',"royalblue",compassroseCanvas,width/2,height/2,radius*0.75,Math.ceil(fontsize*1.7),1, "north");
