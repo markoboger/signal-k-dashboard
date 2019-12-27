@@ -113,6 +113,7 @@
   font-size: 840%;
   grid-column: 2 / 12;
   grid-row:9 / 29;
+  z-index: 5;
 }
 
 .data-box-container {

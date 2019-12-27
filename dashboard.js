@@ -145,6 +145,7 @@ function drawGauge(degree, abbreviation, color, canvas,x,y,radius,fontsize, offs
         context.rotate(degToRad(viewModel.heading));
     }
     context.fillStyle=color;
+    context.strokeStyle="black";
     context.beginPath();
     context.moveTo(0, -tipradius);
     context.bezierCurveTo(bendstrength, -bendradius, bendstrength, -baseradius, 0, -baseradius);
