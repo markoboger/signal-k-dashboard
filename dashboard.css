@@ -8,12 +8,15 @@
   grid-gap: 1px;
   grid-auto-columns: minmax(0, 12.5%);
   grid-auto-rows: minmax(0,1em);
-  background-image: url('./public/img/map.png');
+  //background-image: url('./public/img/map.png');
 }
 #rose {
   grid-column: 1 / 13;
   grid-row: 1 / 37;
   z-index:3;
+}
+#compassrose {
+  display:none;
 }
 
 .topbox {
