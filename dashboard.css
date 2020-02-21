@@ -8,7 +8,7 @@
   grid-gap: 1px;
   grid-auto-columns: minmax(0, 12.5%);
   grid-auto-rows: minmax(0,1em);
-  //background-image: url('./public/img/map.png');
+  background-image: url('./public/img/map.png');
 }
 #rose {
   grid-column: 1 / 13;
@@ -29,7 +29,7 @@
 
 }
 .bottombox {
-  grid-column: 6/8;
+  grid-column: 6/8
   grid-row: 35/37;
   font-size: 190%;
   color: firebrick;
