@@ -468,7 +468,7 @@ var viewModel = new Vue({
         lon:'009° 56,89',
         time:"12:36:56",
         countdown:"00:45:20",
-        rpm:"Engine 2,700 rpm",
+        rpm:"Eng 2,700 rpm",
         log:"Log 12,345 nm",
         heading:5,
         depth:18.5,
