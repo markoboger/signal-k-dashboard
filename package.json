@@ -18,7 +18,7 @@
     "vue-template-compiler": "^2.6.11"
   },
   "devDependencies": {
-    "@vue/cli-plugin-pwa": "^4.1.1"
+    "@vue/cli-plugin-pwa": "^5.0.8"
   },
   "bugs": {
     "url": "https://github.com/markoboger/signal-k-dashboard/issues"
